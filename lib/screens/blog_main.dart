@@ -70,9 +70,19 @@ class BlogMain extends StatelessWidget {
           }, icon: FaIcon(FontAwesomeIcons.solidUser,))
         ],
       ),
-        body: ListView(
-          padding: const EdgeInsets.all(8),
-          children: createBlogList(context),
+        body: FutureBuilder(
+          future: userBlog.fetchBlogs(),
+          builder: (context, dataSnapshot) {
+            if (dataSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator(),);
+            }
+            else {
+              return ListView(
+                padding: const EdgeInsets.all(8),
+                children: createBlogList(context),
+              );
+            }
+          },
         ),
       floatingActionButton: FloatingActionButton.large(
         onPressed: () {

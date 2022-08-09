@@ -60,20 +60,6 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                     } , child: Text("Create Blog")),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(onPressed: () {
-
-                      userBlogUnconfirmed.clearBlogList();
-                    } , child: Text("Clear all Blogs")),
-                    ElevatedButton(onPressed: () {
-                      userBlogUnconfirmed.getBlogList();
-
-                    } , child: Text("Get all Blogs")),
-                  ],
-                )
-
               ],
             )
         );
@@ -91,46 +77,48 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
       ),
       body: Form(
         key: _form,
-        child: Column(
-          children: [
-            SizedBox(height: 30,),
-            Container(
-              width: 200,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: "title",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 30,),
+              Container(
+                width: 200,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "title",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
+                  maxLines: 1,
+                  onSaved: (value) {
+                    _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: value, blogContent: _editedUserBlog.blogContent);
+                  },
                 ),
-                maxLines: 1,
-                onSaved: (value) {
-                  _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: value, blogContent: _editedUserBlog.blogContent);
-                },
               ),
-            ),
-            SizedBox(height: 50,),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Blog Content",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+              SizedBox(height: 50,),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Blog Content",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 20,
+                  onChanged: (value) {
+
+                  },
+                  onSaved: (value) {
+                    _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: _editedUserBlog.title, blogContent: value);
+                  },
+
                 ),
-                keyboardType: TextInputType.multiline,
-                maxLines: 20,
-                onChanged: (value) {
-
-                },
-                onSaved: (value) {
-                  _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: _editedUserBlog.title, blogContent: value);
-                },
-
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
