@@ -22,18 +22,25 @@ class Blog extends StatelessWidget {
       appBar: AppBar(
         title: preview ? Text("Preview") : Text(this.userName),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            Text(this.blogTitle),
-            SizedBox(
-              height: 100,
-            ),
-            Text(this.blogContent),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Image.asset("assets/images/default_blog_picture.png"),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                  child: Text(this.blogTitle)),
+              SizedBox(
+                height: 30,
+              ),
+              Text(this.blogContent),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.large(
@@ -46,7 +53,7 @@ class Blog extends StatelessWidget {
               child: Text("Back",),
             )),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

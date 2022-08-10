@@ -65,6 +65,7 @@ flutter:
   assets:
     - assets/images/homepage_bg.jpg
     - assets/images/default_user_profile_img.png
+    - assets/images/default_blog_picture.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
