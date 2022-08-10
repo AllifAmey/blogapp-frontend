@@ -4,7 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../providers/user_provider.dart';
 
-import './blog_main.dart';
+import './blog_main_screen.dart';
+import './tabs_screen.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _LogInState extends State<LogIn> {
       user.loginUser(userLoginUsername, userLoginPassword).then((String auth_status) {
         if (auth_status == "authenticated") {
           user.currentUsername = userLoginUsername;
-          Navigator.of(context).pushNamed(BlogMain.routeName);
+          Navigator.of(context).pushNamed(TabsScreen.routeName);
         }
         else {
           print(auth_status);

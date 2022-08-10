@@ -21,6 +21,7 @@ class Blog extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: preview ? Text("Preview") : Text(this.userName),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -53,7 +54,7 @@ class Blog extends StatelessWidget {
               child: Text("Back",),
             )),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

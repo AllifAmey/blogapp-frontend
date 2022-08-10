@@ -5,9 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../providers/user_provider.dart';
 import '../providers/user_blog_provider.dart';
 
-import './blog_create_form.dart';
-import './account.dart';
-import './blog_individual.dart';
+import './blog_create_form_screen.dart';
+import './account_screen.dart';
+import './blog_individual_screen.dart';
 
 class BlogMain extends StatelessWidget {
   static const routeName = 'blog-main/';
@@ -62,13 +62,13 @@ class BlogMain extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Blogs from Users"),
-        actions: [
-          IconButton(onPressed: () {
-
-            Navigator.of(context).pushNamed(Account.routeName);
-          }, icon: FaIcon(FontAwesomeIcons.solidUser,))
-        ],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text("Blogs from Users"),
+            FaIcon(FontAwesomeIcons.faceSmile)
+          ],
+        ),
       ),
         body: FutureBuilder(
           future: userBlog.fetchBlogs(),
@@ -77,24 +77,18 @@ class BlogMain extends StatelessWidget {
               return Center(child: CircularProgressIndicator(),);
             }
             else {
-              return ListView(
-                padding: const EdgeInsets.all(8),
-                children: createBlogList(context),
+              return Container(
+                height: 700,
+                child: ListView(
+                  padding: const EdgeInsets.all(8),
+                  children: createBlogList(context),
+                ),
               );
             }
           },
         ),
-      floatingActionButton: FloatingActionButton.large(
-        onPressed: () {
-          Navigator.of(context).pushNamed(BlogCreateForm.routeName);
-        },
-        child: FittedBox(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Create Blog!",),
-            )),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
+
+

@@ -5,8 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../providers/user_provider.dart';
 import '../providers/user_blog_provider.dart';
-import './blog_main.dart';
-import 'blog_individual.dart';
+import './blog_main_screen.dart';
+import 'blog_individual_screen.dart';
+import './tabs_screen.dart';
 
 
 class BlogCreateForm extends StatefulWidget {
@@ -54,7 +55,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                     }, child: Text("Go back")),
                     ElevatedButton(onPressed: () {
                       userBlogUnconfirmed.createBlog(_editedUserBlog);
-                      Navigator.of(context).pushNamed(BlogMain.routeName);
+                      Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
                     } , child: Text("Create Blog")),
                   ],
                 ),
@@ -66,7 +67,8 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
 
     void saveForm(BuildContext ctx, [bool preview = false]) {
       // option to preview blog and to confirm
-      if (preview = true) {
+      print(preview);
+      if (preview == true) {
         _form.currentState?.save();
         Navigator.of(ctx).push(
             MaterialPageRoute(
@@ -89,6 +91,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Create a Blog!"),
+        centerTitle: true,
       ),
       body: Stepper(
         type: StepperType.vertical,
@@ -154,7 +157,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                 children: [
                       ElevatedButton(
                         onPressed: () {
-                          saveForm(context);
+                          saveForm(context, true);
                         },
                         child: Text("Preview!"),
                       ),
