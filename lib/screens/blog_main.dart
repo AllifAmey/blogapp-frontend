@@ -7,7 +7,7 @@ import '../providers/user_blog_provider.dart';
 
 import './blog_create_form.dart';
 import './account.dart';
-import './blog_created.dart';
+import './blog_individual.dart';
 
 class BlogMain extends StatelessWidget {
   static const routeName = 'blog-main/';
@@ -22,9 +22,9 @@ class BlogMain extends StatelessWidget {
     List<Widget> createBlogList(BuildContext ctx) {
 
       // function that returns a list of blogs or a list of widgets .
+
       final userBlogList = userBlog.blog_list;
       List<Widget> BlogListWidgets = [];
-
       userBlogList.map((blog) {
         BlogListWidgets.add(
             GestureDetector(

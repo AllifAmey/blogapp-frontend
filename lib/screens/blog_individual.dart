@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class Blog extends StatelessWidget {
@@ -5,18 +7,20 @@ class Blog extends StatelessWidget {
   String userName;
   String blogTitle;
   String blogContent;
+  bool preview;
 
   Blog({
     required this.userName,
     required this.blogTitle,
     required this.blogContent,
+    this.preview = false
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(this.userName),
+        title: preview ? Text("Preview") : Text(this.userName),
       ),
       body: Center(
         child: Column(

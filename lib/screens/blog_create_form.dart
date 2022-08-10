@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../providers/user_provider.dart';
 import '../providers/user_blog_provider.dart';
 import './blog_main.dart';
+import 'blog_individual.dart';
 
 
 class BlogCreateForm extends StatefulWidget {
@@ -20,22 +21,19 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
 
   final _form = GlobalKey<FormState>();
 
-
-
-  String title = '';
+  String blogTitle = '';
   String blogContent = '';
-
-
-
+  int _currentStep = 0;
 
   @override
   Widget build(BuildContext context) {
     final userBlogUnconfirmed = Provider.of<UserBlogProvider>(context);
     final user = Provider.of<UserProvider>(context);
 
-    UserBlog _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: title, blogContent: blogContent);
+    UserBlog _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: blogTitle, blogContent: blogContent);
 
     void blogConfirmationPage (BuildContext ctx ) {
+      // widget shown after user presses create blog button
       showModalBottomSheet(
         elevation: 100,
         shape: RoundedRectangleBorder(
@@ -66,68 +64,131 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
       },);
     }
 
-    void saveform(BuildContext ctx) {
-      _form.currentState?.save();
-      blogConfirmationPage(ctx);
+    void saveForm(BuildContext ctx, [bool preview = false]) {
+      // option to preview blog and to confirm
+      if (preview = true) {
+        _form.currentState?.save();
+        Navigator.of(ctx).push(
+            MaterialPageRoute(
+                builder: (_) {
+                  return Blog(
+                    userName: _editedUserBlog.username as String,
+                    blogTitle: _editedUserBlog.title as String,
+                    blogContent: _editedUserBlog.blogContent as String,
+                    preview: true,
+                  );
+                }
+            ));
+      }
+      else{
+        _form.currentState?.save();
+        blogConfirmationPage(ctx);
+      }
     }
-
+    // where the form is created
     return Scaffold(
       appBar: AppBar(
         title: Text("Create a Blog!"),
       ),
-      body: Form(
-        key: _form,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 30,),
-              Container(
-                width: 200,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "title",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+      body: Stepper(
+        type: StepperType.vertical,
+        steps: [
+          Step(title: Text("Blog"),
+            content: Form(
+              key: _form,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 30,),
+                    Container(
+                      width: 200,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "title",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        maxLines: 1,
+                        onSaved: (value) {
+                          _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: value, blogContent: _editedUserBlog.blogContent);
+                        },
+                      ),
                     ),
-                  ),
-                  maxLines: 1,
-                  onSaved: (value) {
-                    _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: value, blogContent: _editedUserBlog.blogContent);
-                  },
+                    SizedBox(height: 50,),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "Blog Content",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 20,
+                        onChanged: (value) {
+                        },
+                        onSaved: (value) {
+                          _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: _editedUserBlog.title, blogContent: value);
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ),
-              SizedBox(height: 50,),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "Blog Content",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 20,
-                  onChanged: (value) {
-
-                  },
-                  onSaved: (value) {
-                    _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: _editedUserBlog.title, blogContent: value);
-                  },
-
-                ),
-              )
-            ],
+            ),
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          saveform(context);
+          Step(
+              title: Text("Location"),
+              content: Text("Location")
+          ),
+          Step(
+              title: Text("Picture"),
+              content: Text("Picture")
+          ),
+          Step(
+              title: Text("Confirm"),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          saveForm(context);
+                        },
+                        child: Text("Preview!"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          saveForm(context);
+                        },
+                        child: Text("Confirm Blog"),
+                      ),
+                  ]
+              )
+          ),
+
+        ],
+                onStepTapped: (int newIndex) {
+                  setState(() {
+                    _currentStep: newIndex;
+                  });},
+        currentStep: _currentStep,
+        onStepContinue: () {
+          if (_currentStep != 3) {
+            setState(() {
+              _currentStep += 1;
+            });
+          }
         },
-        label: Text("Create Blog!"),
+        onStepCancel: () {
+          if (_currentStep != 0 ) {
+            setState(() {
+              _currentStep -= 1;
+            });
+          }
+        },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

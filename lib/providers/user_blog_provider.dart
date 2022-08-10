@@ -14,6 +14,8 @@ class UserBlog {
   final String? username;
   final String? title;
   final String? blogContent;
+  late String? address;
+  late String? location;
 
 
   UserBlog({required this.username, required this.title, required this.blogContent});
