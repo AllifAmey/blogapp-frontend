@@ -46,7 +46,7 @@ class _LogInState extends State<LogIn> {
 
     return Scaffold(
         body: Container(
-          constraints: BoxConstraints.expand(),
+          constraints: const BoxConstraints.expand(),
           decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/images/homepage_bg.jpg"),
@@ -56,7 +56,7 @@ class _LogInState extends State<LogIn> {
             child: Form(
               key: _form,
               child: Container(
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 height: 400,
                 width: double.infinity,
                 child: Card(
@@ -65,10 +65,10 @@ class _LogInState extends State<LogIn> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("Log In!"),
+                          const Text("Log In!"),
                           TextFormField(
                             decoration: InputDecoration(
-                              icon: FaIcon(FontAwesomeIcons.user),
+                              icon: const FaIcon(FontAwesomeIcons.user),
                               labelText: "Username",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -88,7 +88,7 @@ class _LogInState extends State<LogIn> {
                           ),
                           TextFormField(
                             decoration: InputDecoration(
-                              icon: FaIcon(FontAwesomeIcons.user),
+                              icon: const FaIcon(FontAwesomeIcons.user),
                               labelText: "Password",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -113,12 +113,12 @@ class _LogInState extends State<LogIn> {
                                   onPressed: () {
                                     saveform();
                                   },
-                                  child: Text("Log In")),
+                                  child: const Text("Log In")),
                               ElevatedButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text("Go Back!!")),
+                                  child: const Text("Go Back!!")),
                             ],
                           )
                         ],

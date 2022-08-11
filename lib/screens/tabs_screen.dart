@@ -6,11 +6,13 @@ import 'package:provider/provider.dart';
 
 import './blog_main_screen.dart';
 import './blog_create_form_screen.dart';
-import './account_screen.dart';
+import './account_profile_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = 'tabs/';
-  const TabsScreen({Key? key}) : super(key: key);
+  int pageNumDefault;
+
+  TabsScreen({Key? key, required this.pageNumDefault}) : super(key: key);
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
@@ -18,38 +20,42 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
 
+  _TabsScreenState();
+
   final List<Map<String, Object>> _pages = [
     {
-      'page': BlogMain(),
+      'page': const BlogMain(),
       'title': 'Blogs from users'
     },
     {
-      'page': BlogCreateForm(),
+      'page': const BlogCreateForm(),
       'title': 'Create a blog!'
     },
     {
-      'page': Account(),
+      'page': const Account(),
       'title': 'Account Page'
     },
   ];
 
-  int _selectedPageIndex = 0;
 
-  void _selectPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
-  }
   @override
   Widget build(BuildContext context) {
+    print(widget.pageNumDefault);
+    int _selectedPageIndex = widget.pageNumDefault;
+
+    void _selectPage(int index) {
+      setState(() {
+        widget.pageNumDefault = index;
+      });
+    }
     return Scaffold(
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black,
         selectedItemColor: Colors.blue,
         onTap: _selectPage,
-        currentIndex: _selectedPageIndex,
-        items: [
+        currentIndex: widget.pageNumDefault,
+        items: const [
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.blog),
             label: "Blogs",

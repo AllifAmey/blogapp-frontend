@@ -46,17 +46,17 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("Are you sure?"),
+                const Text("Are you sure?"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(onPressed: () {
                       Navigator.pop(ctx);
-                    }, child: Text("Go back")),
+                    }, child: const Text("Go back")),
                     ElevatedButton(onPressed: () {
                       userBlogUnconfirmed.createBlog(_editedUserBlog);
                       Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-                    } , child: Text("Create Blog")),
+                    } , child: const Text("Create Blog")),
                   ],
                 ),
               ],
@@ -67,7 +67,6 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
 
     void saveForm(BuildContext ctx, [bool preview = false]) {
       // option to preview blog and to confirm
-      print(preview);
       if (preview == true) {
         _form.currentState?.save();
         Navigator.of(ctx).push(
@@ -90,13 +89,14 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
     // where the form is created
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create a Blog!"),
+        automaticallyImplyLeading: false,
+        title: const Text("Create a Blog!"),
         centerTitle: true,
       ),
       body: Stepper(
         type: StepperType.vertical,
         steps: [
-          Step(title: Text("Blog"),
+          Step(title: const Text("Blog"),
             content: Form(
               key: _form,
               child: SingleChildScrollView(
@@ -118,7 +118,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                         },
                       ),
                     ),
-                    SizedBox(height: 50,),
+                    const SizedBox(height: 50,),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: TextFormField(
@@ -142,16 +142,16 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
               ),
             ),
           ),
-          Step(
+          const Step(
               title: Text("Location"),
               content: Text("Location")
           ),
-          Step(
+          const Step(
               title: Text("Picture"),
               content: Text("Picture")
           ),
           Step(
-              title: Text("Confirm"),
+              title: const Text("Confirm"),
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -159,13 +159,13 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                         onPressed: () {
                           saveForm(context, true);
                         },
-                        child: Text("Preview!"),
+                        child: const Text("Preview!"),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           saveForm(context);
                         },
-                        child: Text("Confirm Blog"),
+                        child: const Text("Confirm Blog"),
                       ),
                   ]
               )

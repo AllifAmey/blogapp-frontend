@@ -42,7 +42,7 @@ class _SignUpState extends State<SignUp> {
     }
     return Scaffold(
         body: Container(
-          constraints: BoxConstraints.expand(),
+          constraints: const BoxConstraints.expand(),
           decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/images/homepage_bg.jpg"),
@@ -52,7 +52,7 @@ class _SignUpState extends State<SignUp> {
             child: Form(
               key: _form,
               child: Container(
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 height: 600,
                 width: double.infinity,
                 child: Card(
@@ -64,7 +64,7 @@ class _SignUpState extends State<SignUp> {
                           Text("Sign up!"),
                           TextFormField(
                             decoration: InputDecoration(
-                              icon: FaIcon(FontAwesomeIcons.user),
+                              icon: const FaIcon(FontAwesomeIcons.user),
                               labelText: "Username",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -80,7 +80,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           TextFormField(
                             decoration: InputDecoration(
-                              icon: FaIcon(FontAwesomeIcons.user),
+                              icon: const FaIcon(FontAwesomeIcons.user),
                               labelText: "Password",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -104,7 +104,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           TextFormField(
                             decoration: InputDecoration(
-                              icon: FaIcon(FontAwesomeIcons.user),
+                              icon: const FaIcon(FontAwesomeIcons.user),
                               labelText: "Repeat Password",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -133,12 +133,12 @@ class _SignUpState extends State<SignUp> {
                                   onPressed: () {
                                     saveform();
                                   },
-                                  child: Text("Sign Up")),
+                                  child: const Text("Sign Up")),
                               ElevatedButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text("Go Back!!")),
+                                  child: const Text("Go Back!!")),
                             ],
                           )
                         ],

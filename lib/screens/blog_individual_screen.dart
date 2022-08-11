@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 class Blog extends StatelessWidget {
-
+  // individual blog screen
   String userName;
   String blogTitle;
   String blogContent;
@@ -31,12 +31,12 @@ class Blog extends StatelessWidget {
                 padding: const EdgeInsets.all(15.0),
                 child: Image.asset("assets/images/default_blog_picture.png"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
                   child: Text(this.blogTitle)),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Text(this.blogContent),
@@ -48,9 +48,9 @@ class Blog extends StatelessWidget {
         onPressed: () {
           Navigator.pop(context);
         },
-        child: FittedBox(
+        child: const FittedBox(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Text("Back",),
             )),
       ),

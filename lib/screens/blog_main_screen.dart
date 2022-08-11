@@ -6,7 +6,7 @@ import '../providers/user_provider.dart';
 import '../providers/user_blog_provider.dart';
 
 import './blog_create_form_screen.dart';
-import './account_screen.dart';
+import './account_profile_screen.dart';
 import './blog_individual_screen.dart';
 
 class BlogMain extends StatelessWidget {
@@ -24,9 +24,9 @@ class BlogMain extends StatelessWidget {
       // function that returns a list of blogs or a list of widgets .
 
       final userBlogList = userBlog.blog_list;
-      List<Widget> BlogListWidgets = [];
+      List<Widget> blogListWidgets = [];
       userBlogList.map((blog) {
-        BlogListWidgets.add(
+        blogListWidgets.add(
             GestureDetector(
               onTap: () {
                 //
@@ -57,14 +57,15 @@ class BlogMain extends StatelessWidget {
             )
         );
       }).toList();
-      return BlogListWidgets;
+      return blogListWidgets;
     }
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
+          children: const [
             Text("Blogs from Users"),
             FaIcon(FontAwesomeIcons.faceSmile)
           ],
@@ -74,7 +75,7 @@ class BlogMain extends StatelessWidget {
           future: userBlog.fetchBlogs(),
           builder: (context, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator(),);
+              return const Center(child: CircularProgressIndicator(),);
             }
             else {
               return Container(

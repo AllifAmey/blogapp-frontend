@@ -6,8 +6,9 @@ import './screens/auth_login_screen.dart';
 import './screens/auth_signup_screen.dart';
 import './screens/blog_main_screen.dart';
 import './screens/blog_create_form_screen.dart';
-import './screens/account_screen.dart';
+import './screens/account_profile_screen.dart';
 import './screens/tabs_screen.dart';
+import './screens/account_settings_screen.dart';
 
 import './providers/user_provider.dart';
 import './providers/user_app_setting_provider.dart';
@@ -20,7 +21,7 @@ void main() {
         ChangeNotifierProvider(create: (ctx) => UserAppSettingsProvider(),),
         ChangeNotifierProvider(create: (ctx) => UserProvider(),),
         ChangeNotifierProvider(create: (ctx) => UserBlogProvider(),)
-      ], child: Blog()));
+      ], child: const Blog()));
 }
 
 class Blog extends StatelessWidget {
@@ -45,12 +46,13 @@ class Blog extends StatelessWidget {
         ),
         routes: {
           '/': (ctx) => const HomePage(),
-          LogIn.routeName : (ctx) => LogIn(),
-          SignUp.routeName : (ctx) => SignUp(),
-          BlogMain.routeName : (ctx) => BlogMain(),
-          BlogCreateForm.routeName: (ctx) => BlogCreateForm(),
-          Account.routeName: (ctx) => Account(),
-          TabsScreen.routeName: (ctx) => TabsScreen(),
+          LogIn.routeName : (ctx) => const LogIn(),
+          SignUp.routeName : (ctx) => const SignUp(),
+          BlogMain.routeName : (ctx) => const BlogMain(),
+          BlogCreateForm.routeName: (ctx) => const BlogCreateForm(),
+          Account.routeName: (ctx) => const Account(),
+          TabsScreen.routeName: (ctx) => TabsScreen(pageNumDefault: 0,),
+          AccountSettings.routeName: (ctx) => const AccountSettings(),
         },
       );
   }

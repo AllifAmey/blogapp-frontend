@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          constraints: BoxConstraints.expand(),
+          constraints: const BoxConstraints.expand(),
           decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/images/homepage_bg.jpg"),
@@ -18,25 +18,25 @@ class HomePage extends StatelessWidget {
           ),
           child: Center(
             child: Container(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               height: 200,
               width: double.infinity,
               child: Card(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("Welcome to the blog app!"),
+                      const Text("Welcome to the blog app!"),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(onPressed: () {
                             Navigator.of(context).pushNamed(LogIn.routeName);
                           },
-                              child: Text("Log in")),
+                              child: const Text("Log in")),
                           ElevatedButton(onPressed: () {
                             Navigator.of(context).pushNamed(SignUp.routeName);
                           },
-                              child: Text("Sign Up"))
+                              child: const Text("Sign Up"))
                         ],
                       )
                     ],
