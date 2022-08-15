@@ -8,14 +8,12 @@ class UserAppSettings {
   /*
   User can change:
   font-style,
-  font-size,
    */
+  final String? username;
+  final String? fontFamily;
 
-  final String? fontStyle;
-  final String? fontSize;
 
-
-  UserAppSettings({required this.fontStyle, required this.fontSize});
+  UserAppSettings({required this.username, required this.fontFamily});
 
 }
 
@@ -24,7 +22,12 @@ class UserAppSettingsProvider with ChangeNotifier {
 
   UserAppSettingsProvider();
 
+  UserAppSettings? userSettings;
 
+  void changeUserSettings(String currentuser, String changefontFamily) {
+
+    userSettings = UserAppSettings(username: currentuser, fontFamily: changefontFamily);
+  }
 /*
 
   final Map<String, dynamic>? user_authToken = {

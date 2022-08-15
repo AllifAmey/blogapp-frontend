@@ -1,6 +1,7 @@
-import 'dart:ffi';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+
+import '../providers/user_app_setting_provider.dart';
 
 class Blog extends StatelessWidget {
   // individual blog screen
@@ -18,6 +19,7 @@ class Blog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userblogSettings = Provider.of<UserAppSettingsProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: preview ? Text("Preview") : Text(this.userName),
@@ -35,11 +37,21 @@ class Blog extends StatelessWidget {
                 height: 30,
               ),
               Container(
-                  child: Text(this.blogTitle)),
+                  child: Text(
+                      this.blogTitle,
+                      style: TextStyle(
+                        fontFamily: userblogSettings.userSettings?.fontFamily,
+                      )
+                  ),
+              ),
               const SizedBox(
                 height: 30,
               ),
-              Text(this.blogContent),
+              Text(this.blogContent,
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: userblogSettings.userSettings?.fontFamily,
+              ),),
             ],
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../providers/user_provider.dart';
+import '../providers/user_app_setting_provider.dart';
 
 import './blog_main_screen.dart';
 import './tabs_screen.dart';
@@ -20,8 +21,8 @@ class _LogInState extends State<LogIn> {
   final _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    // list of users.
     final user = Provider.of<UserProvider>(context);
+    final defaulUserSettings = Provider.of<UserAppSettingsProvider>(context);
     String userLoginUsername = "";
     String userLoginPassword = "";
 
@@ -33,6 +34,7 @@ class _LogInState extends State<LogIn> {
       user.loginUser(userLoginUsername, userLoginPassword).then((String auth_status) {
         if (auth_status == "authenticated") {
           user.currentUsername = userLoginUsername;
+          defaulUserSettings.changeUserSettings(user.currentUsername, "Merriweather");
           Navigator.of(context).pushNamed(TabsScreen.routeName);
         }
         else {

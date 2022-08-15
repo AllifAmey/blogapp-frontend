@@ -9,6 +9,7 @@ import './screens/blog_create_form_screen.dart';
 import './screens/account_profile_screen.dart';
 import './screens/tabs_screen.dart';
 import './screens/account_settings_screen.dart';
+import './screens/account_blog_settings_screen.dart';
 
 import './providers/user_provider.dart';
 import './providers/user_app_setting_provider.dart';
@@ -27,18 +28,22 @@ void main() {
 class Blog extends StatelessWidget {
   const Blog({Key? key}) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
-    final userAppSetting = Provider.of<UserAppSettingsProvider>(context);
-    final userBlog = Provider.of<UserBlogProvider>(context);
-    userBlog.fetchBlogs();
     return MaterialApp(
+      // headline small, for blog title
+      // body medium, for blog content
         theme: ThemeData(
           textTheme: const TextTheme(
-            headline6: TextStyle(
+            // blog's title
+            headlineSmall: TextStyle(
+              fontSize: 40,
             ),
+            // App text content in general
+            bodyMedium: TextStyle(
+              fontSize: 20,
+
+            )
           ),
           appBarTheme: const AppBarTheme(
             // color: Colors.deepOrange,
@@ -53,6 +58,7 @@ class Blog extends StatelessWidget {
           Account.routeName: (ctx) => const Account(),
           TabsScreen.routeName: (ctx) => TabsScreen(pageNumDefault: 0,),
           AccountSettings.routeName: (ctx) => const AccountSettings(),
+          AccountBlogSettings.routeName: (ctx) => const AccountBlogSettings(),
         },
       );
   }
