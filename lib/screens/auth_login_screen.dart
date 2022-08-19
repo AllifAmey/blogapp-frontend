@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../providers/user_provider.dart';
 import '../providers/user_app_setting_provider.dart';
 
-import './blog_main_screen.dart';
 import './tabs_screen.dart';
 
 class LogIn extends StatefulWidget {

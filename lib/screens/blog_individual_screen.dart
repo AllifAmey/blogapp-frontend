@@ -41,17 +41,21 @@ class Blog extends StatelessWidget {
                       this.blogTitle,
                       style: TextStyle(
                         fontFamily: userblogSettings.userSettings?.fontFamily,
+                        fontSize: 30,
                       )
                   ),
               ),
               const SizedBox(
                 height: 30,
               ),
-              Text(this.blogContent,
-              style: TextStyle(
-                fontSize: 20,
-                fontFamily: userblogSettings.userSettings?.fontFamily,
-              ),),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(this.blogContent,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: userblogSettings.userSettings?.fontFamily,
+                ),),
+              ),
             ],
           ),
         ),

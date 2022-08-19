@@ -2,6 +2,23 @@
 
 A simple blog app.
 
+Planned features:
+Animation transitioning between screens.
+Picking image from camera/gallery
+Selecting image from internet or gallery for blogs
+Selecting location for blog.
+Friend list feature
+Chat feature. 
+
+Current features:
+Create User
+Log in as User
+Create Blogs
+Change default font style for blogs - frontend only will be changed soon. 
+See blogs from all users.
+
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../providers/user_provider.dart';
 
-import './blog_main_screen.dart';
+import './tabs_screen.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -33,10 +33,10 @@ class _SignUpState extends State<SignUp> {
 
         _form.currentState?.validate();
         _form.currentState?.save();
-        // line below creates User and then adds a authentication token so that they can use login page
-        userData.createUser(username as String, pass1 as String).then((_) => userData.createUserAuth(username as String, pass1 as String));
+        // line below creates User, then adds a authentication token so that they can use login page and after authenticated gets the userid.
+        userData.createUser(username as String, pass1 as String).then((_) => userData.createUserAuth(username as String, pass1 as String)).then((_) => userData.loginUser(username as String, pass1 as String));
         userData.currentUsername = username as String;
-        Navigator.of(context).pushNamed(BlogMain.routeName);
+        Navigator.of(context).pushNamed(TabsScreen.routeName);
       }
 
     }
