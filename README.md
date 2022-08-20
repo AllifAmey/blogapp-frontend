@@ -14,7 +14,7 @@ Current features:
 Create User
 Log in as User
 Create Blogs
-Change default font style for blogs - frontend only will be changed soon. 
+Change default font style for blogs. 
 See blogs from all users.
 
 
