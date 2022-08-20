@@ -6,15 +6,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserAppSettings {
-  /*
-  User can change:
-  font-style,
-   */
-  final String? username;
+  // This model will contain user's setting for the app.
+
   final String? fontFamily;
 
 
-  UserAppSettings({required this.username, required this.fontFamily});
+  UserAppSettings({required this.fontFamily});
 
 }
 
@@ -25,9 +22,33 @@ class UserAppSettingsProvider with ChangeNotifier {
 
   UserAppSettings? userSettings;
 
-  void changeUserSettings(String currentuser, String changefontFamily) {
+  int userSettingsId = 0;
 
-    userSettings = UserAppSettings(username: currentuser, fontFamily: changefontFamily);
+  void currentUserSettings(String changefontFamily) {
+    //establish
+    userSettings = UserAppSettings(fontFamily: changefontFamily);
+  }
+
+  Future<void> changeUserSettings(int settingID, int userId, String newFontFamily) async {
+    // Changes user settings with patch
+    var url = 'http://10.0.2.2:8000/api/profilesetting-viewset/$settingID/';
+    print(userId);
+
+    final response = await http.patch(Uri.parse(url),headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }, body: json.encode(
+        {
+          'id': settingID,
+          'user': userId,
+          'font_style': newFontFamily
+        }));
+    final jsonData = json.decode(response.body) as Map<String, dynamic>;
+    print(jsonData);
+    if (response.statusCode == 200) {
+      userSettings = UserAppSettings(fontFamily: newFontFamily);
+    }
+
   }
 
   //Note to self: find a way to send to backend later.

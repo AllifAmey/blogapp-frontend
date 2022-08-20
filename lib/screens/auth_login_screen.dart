@@ -21,7 +21,7 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
-    final defaulUserSettings = Provider.of<UserAppSettingsProvider>(context);
+    final UserSettings = Provider.of<UserAppSettingsProvider>(context);
     String userLoginUsername = "";
     String userLoginPassword = "";
 
@@ -30,14 +30,16 @@ class _LogInState extends State<LogIn> {
     void saveform () {
       _form.currentState?.save();
       // login page api checks if the user has a authentication token before they're allowed in.
-      user.loginUser(userLoginUsername, userLoginPassword).then((String auth_status) {
-        if (auth_status == "authenticated") {
+      user.loginUser(userLoginUsername, userLoginPassword).then((Map<String, dynamic> userStatus) {
+        if (userStatus['auth_status'] == "Authenticated") {
+          // adds information about user from the backend to the frontend.
           user.currentUsername = userLoginUsername;
-          defaulUserSettings.changeUserSettings(user.currentUsername, "Merriweather");
+          UserSettings.currentUserSettings(userStatus['font_style']);
+          UserSettings.userSettingsId = userStatus['setting_id'];
           Navigator.of(context).pushNamed(TabsScreen.routeName);
         }
         else {
-          print(auth_status);
+          print(userStatus);
         }
       });
     }

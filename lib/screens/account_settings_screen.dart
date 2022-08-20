@@ -42,7 +42,7 @@ class AccountSettings extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (_) {
-                return const AccountBlogSettings();
+                return AccountBlogSettings();
               })
             );
           },

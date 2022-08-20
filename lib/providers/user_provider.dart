@@ -4,30 +4,13 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class UserProfile {
-
-  final String? userName;
-  final String? userPass;
-
-
-  UserProfile({required this.userName, required this.userPass});
-
-}
-
 class UserProvider with ChangeNotifier {
 
 
   UserProvider();
 
-  List<UserProfile> users = [];
-
   String currentUsername = "";
   int currentUsernameId = 0;
-
-  List<UserProfile> listUsers() {
-    print(users);
-    return users;
-  }
 
   String getUser() {
     return currentUsername;
@@ -55,6 +38,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> createUserAuth(String userName, String userPass) async {
+    //This creates the authentication for the user
     const url = 'http://10.0.2.2:8000/api/signup/';
 
     final response = await http.post(Uri.parse(url),headers: {
@@ -70,12 +54,9 @@ class UserProvider with ChangeNotifier {
     print("I created the user Authentication");
   }
 
-  String userAuthenticated(String auth_status) {
-    return auth_status;
-  }
-
-  Future<String> loginUser(String userName, String userPass) async {
-    const url = 'http://10.0.2.2:8000/api/user_auth/';
+  Future<Map<String, dynamic>> loginUser(String userName, String userPass) async {
+    // Authenticates user and returns values attached to user if authenticated
+    const url = 'http://10.0.2.2:8000/api/auth/login/';
     final response = await http.post(Uri.parse(url),headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -85,13 +66,15 @@ class UserProvider with ChangeNotifier {
         }));
     final jsonData = json.decode(response.body) as Map<String, dynamic>;
 
+    //
     print(jsonData);
-    if (jsonData['message'] == 'Authenticated') {
+    if (jsonData['auth_status'] == 'Authenticated') {
       currentUsernameId = jsonData['user_id'];
-      return "authenticated";
+      // "authenticated"
+      return jsonData;
     }
     else {
-      return jsonData['message'];
+      return jsonData;
     }
   }
 

@@ -40,7 +40,6 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.pageNumDefault);
     int _selectedPageIndex = widget.pageNumDefault;
 
     void _selectPage(int index) {

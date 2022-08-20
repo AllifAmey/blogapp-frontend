@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/user_provider.dart';
 import '../providers/user_app_setting_provider.dart';
 
 class AccountBlogSettings extends StatefulWidget {
   // Account settings for Blog
-  const AccountBlogSettings({Key? key}) : super(key: key);
+
+  String? currentFont = "";
+
+  AccountBlogSettings({Key? key}) : super(key: key);
 
   static const routeName = "blog-main/account/settings/blog";
 
@@ -15,17 +19,21 @@ class AccountBlogSettings extends StatefulWidget {
 
 class _AccountBlogSettingsState extends State<AccountBlogSettings> {
 
-  String currentFont = "";
 
   @override
   Widget build(BuildContext context) {
-    final currentAppSettings = Provider.of<UserAppSettingsProvider>(context);
-    var currentUserFont = currentAppSettings.userSettings?.fontFamily;
+    final currentUser = Provider.of<UserProvider>(context);
+    final currentUserSettings = Provider.of<UserAppSettingsProvider>(context);
 
+    if (widget.currentFont == "") {
+      setState(() {
+        widget.currentFont = currentUserSettings.userSettings?.fontFamily;
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Blog Settings"),
+        title: const Text("Blog Settings"),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -52,11 +60,11 @@ class _AccountBlogSettingsState extends State<AccountBlogSettings> {
                 fontFamily: "Roboto"
               ),),
             trailing: Switch(
-              value: currentUserFont == "Roboto" ? true : false,
+              value: widget.currentFont == "Roboto" ? true : false,
               onChanged: (value) {
                 setState(() {
                   if (value == true) {
-                    currentAppSettings.changeUserSettings("Mickey", "Roboto");
+                    widget.currentFont = "Roboto";
                   }
                 });
               },
@@ -70,11 +78,11 @@ class _AccountBlogSettingsState extends State<AccountBlogSettings> {
               fontFamily: "Merriweather",
             ),),
             trailing: Switch(
-              value: currentUserFont == "Merriweather" ? true : false,
+              value: widget.currentFont == "Merriweather" ? true : false,
               onChanged: (value) {
                 setState(() {
                   if (value == true) {
-                    currentAppSettings.changeUserSettings("Mickey", "Merriweather");
+                    widget.currentFont = "Merriweather";
                   }
                 });
               },
@@ -90,11 +98,11 @@ class _AccountBlogSettingsState extends State<AccountBlogSettings> {
               fontSize: 20,
             )),
             trailing: Switch(
-              value: currentUserFont == "Lobster" ? true : false,
+              value: widget.currentFont == "Lobster" ? true : false,
               onChanged: (value) {
                 setState(() {
                   if (value == true) {
-                    currentAppSettings.changeUserSettings("Mickey", "Lobster");
+                    widget.currentFont = "Lobster";
                   }
                 });
               },
@@ -109,11 +117,11 @@ class _AccountBlogSettingsState extends State<AccountBlogSettings> {
               fontSize: 20,
             ),),
             trailing: Switch(
-              value: currentUserFont == "IndieFlower" ? true : false,
+              value: widget.currentFont == "IndieFlower" ? true : false,
               onChanged: (value) {
                 setState(() {
                   if (value == true) {
-                    currentAppSettings.changeUserSettings("Mickey", "IndieFlower");
+                    widget.currentFont = "IndieFlower";
                   }
                 });
               },
@@ -123,6 +131,18 @@ class _AccountBlogSettingsState extends State<AccountBlogSettings> {
           ),
         ],
       ),
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+          // update method
+          currentUserSettings.changeUserSettings(
+              currentUserSettings.userSettingsId,
+              currentUser.currentUsernameId,
+              widget.currentFont as String);
+          Navigator.pop(context);
+        },
+        child: Text("Submit"),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

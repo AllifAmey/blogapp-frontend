@@ -58,7 +58,7 @@ class Blog extends StatelessWidget {
           Account.routeName: (ctx) => const Account(),
           TabsScreen.routeName: (ctx) => TabsScreen(pageNumDefault: 0,),
           AccountSettings.routeName: (ctx) => const AccountSettings(),
-          AccountBlogSettings.routeName: (ctx) => const AccountBlogSettings(),
+          AccountBlogSettings.routeName: (ctx) => AccountBlogSettings(),
         },
       );
   }

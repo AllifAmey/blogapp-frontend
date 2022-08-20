@@ -48,7 +48,6 @@ class UserBlogProvider with ChangeNotifier {
   Future<void> fetchBlogs() async {
     // reset blog_list
     blog_list = [];
-    print("I was touched!");
 
     const url = 'http://10.0.2.2:8000/api/userblog-viewset/';
 
