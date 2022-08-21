@@ -21,6 +21,7 @@ class UserAppSettingsProvider with ChangeNotifier {
   UserAppSettingsProvider();
 
   UserAppSettings? userSettings;
+  File? userProfilePicture;
 
   int userSettingsId = 0;
 
