@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:path_provider/path_provider.dart';
 
 class UserAppSettings {
   // This model will contain user's setting for the app.
@@ -21,8 +25,7 @@ class UserAppSettingsProvider with ChangeNotifier {
   UserAppSettingsProvider();
 
   UserAppSettings? userSettings;
-  File? userProfilePicture;
-
+  Image? userProfilePicture;
   int userSettingsId = 0;
 
   void currentUserSettings(String changefontFamily) {
@@ -33,7 +36,6 @@ class UserAppSettingsProvider with ChangeNotifier {
   Future<void> changeUserSettings(int settingID, int userId, String newFontFamily) async {
     // Changes user settings with patch
     var url = 'http://10.0.2.2:8000/api/profilesetting-viewset/$settingID/';
-    print(userId);
 
     final response = await http.patch(Uri.parse(url),headers: {
       'Accept': 'application/json',
@@ -52,26 +54,62 @@ class UserAppSettingsProvider with ChangeNotifier {
 
   }
 
-  //Note to self: find a way to send to backend later.
+  Future<void> postImage(File imageCamera, String username) async {
+    // uploading image to firebase storage
 
-  Future<void> postImage(File imageCamera) async {
-    //const url = 'http://10.0.2.2:8000/api/profilepicture/';
-    //const url = 'http://10.0.2.2:8000/api/profilepicturesetting-viewset/';
-    const url = 'https://api.imgur.com/3/upload';
+    // ref location in storage
+    final storageRef = FirebaseStorage.instance.ref(
+        "images/user_profile_pictures");
 
+    // Create a reference
+    final profilePictureRef = storageRef.child("$username.jpg");
+
+    // Create a reference to 'images/$username.jpg'
+    final profilePictureImagesRef = storageRef.child(
+        "images/user_profile_pictures/$username.jpg");
+
+    // the references point to different files
+    assert(profilePictureRef.name == profilePictureImagesRef.name);
+    assert(profilePictureRef.fullPath != profilePictureImagesRef.fullPath);
+
+
+    try {
+      await profilePictureRef.putFile(imageCamera);
+    } on firebase_core.FirebaseException catch (e) {
+      // ...
+    }
+  }
+
+    Future<String?> grabImage(String username) async {
+      // grab image from fire storage and place it in profile picture.
+
+      // Create a storage reference from the app
+      final storageRef = FirebaseStorage.instance.ref();
+
+      final userProfileImageRef = storageRef.child("images/user_profile_pictures/$username.jpg");
+
+      try {
+        const oneMegabyte = 1024 * 1024;
+        final Uint8List? data = await userProfileImageRef.getData(oneMegabyte);
+        // Data for "images/island.jpg" is returned, use this as needed.
+        print(data.runtimeType);
+        userProfilePicture = Image.memory(data!);
+        return "Success";
+      } on FirebaseException catch (e) {
+        // Handle any errors.
+        return "Error";
+      }
+
+    }
     /*
-    final pngByteData = await rootBundle.load('assets/images/homepage_bg.jpg');
-    print(pngByteData);
-    final image = await pngByteData.buffer.asUint8List();
-    final response = await http.put(Uri.parse(url), headers: {
-      'Accept': '',
-      'Content-Type': 'image/jpeg',
-      'Content-Disposition': 'attachment; filename=profileimage'
-    }, body: await imageCamera.readAsBytes().asStream());
-    print("I created the image!!");
-    */
+    // potential django way steps:
+      1. upload image to imgur
+      2. grab url of image from the response and store in django ProfileSettings model.
+      3. To display image use NetworkImage widget and input the url.
 
-
+    //const url = 'http://10.0.2.2:8000/api/profilesetting-viewset/$settingID/';
+    // use above url and use put method on model adjust it.
+    // const url = 'https://api.imgur.com/3/upload'; - use url upload to imgur
     var request = http.MultipartRequest("POST",Uri.parse(url));
 
     request.fields['title'] = "homepage_bg";
@@ -94,10 +132,8 @@ class UserAppSettingsProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         print("It worked!!");
       }
-    });
+    });*/
 
-
-  }
 
 
 

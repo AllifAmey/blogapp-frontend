@@ -32,9 +32,10 @@ class _AccountState extends State<Account> {
       final pickedImageFile = await ImagePicker().pickImage(source: ImageSource.camera);
       setState(() {
         pickedImage= File(pickedImageFile?.path as String);
-        userProfilePicture.userProfilePicture = pickedImage;
+        userProfilePicture.postImage(pickedImage!, userData.currentUsername);
       });
     }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -52,18 +53,18 @@ class _AccountState extends State<Account> {
           child: Column(
             children: [
               const SizedBox(height: 20,),
-              Text("${userData.getUser()}"),
+              Text(userData.getUser()),
               const SizedBox(height: 20,),
               Stack(
                 alignment: AlignmentDirectional.center,
                 children: [CircleAvatar(
                     radius: 200,
-                    backgroundImage: userProfilePicture.userProfilePicture==null ? AssetImage('assets/images/default_user_profile_img.png') : FileImage(userProfilePicture.userProfilePicture!) as ImageProvider<Object>,
+                    backgroundImage: userProfilePicture.userProfilePicture==null ? const AssetImage('assets/images/default_user_profile_img.png') : userProfilePicture.userProfilePicture?.image,
                 ),
                   if (userProfilePicture.userProfilePicture==null) IconButton(
                     iconSize: 150.0,
                     onPressed: _pickImage,
-                    icon: FaIcon(FontAwesomeIcons.camera),
+                    icon: const FaIcon(FontAwesomeIcons.camera),
                   )
                 ]
               ),
@@ -77,7 +78,7 @@ class _AccountState extends State<Account> {
                           Navigator.of(context).pushReplacementNamed(AccountSettings.routeName);
                         },
                         icon: const FaIcon(FontAwesomeIcons.solidUser,),
-                        label: Text("Account Settings")
+                        label: const Text("Account Settings")
                     ),
                     ElevatedButton.icon(
                         onPressed: () {
@@ -95,6 +96,7 @@ class _AccountState extends State<Account> {
                     ),
                     ElevatedButton.icon(
                         onPressed: () {
+                          userProfilePicture.grabImage(userData.currentUsername);
                         },
                         icon: const FaIcon(FontAwesomeIcons.solidUser,),
                         label: const Text("To Be Announced")

@@ -41,7 +41,7 @@ class _LogInState extends State<LogIn> {
         else {
           print(userStatus);
         }
-      });
+      }).then((value) => UserSettings.grabImage(user.currentUsername));
     }
 
 
