@@ -32,10 +32,9 @@ class _AccountState extends State<Account> {
       final pickedImageFile = await ImagePicker().pickImage(source: ImageSource.camera);
       setState(() {
         pickedImage= File(pickedImageFile?.path as String);
-        userProfilePicture.postImage(pickedImage!, userData.currentUsername);
+        userProfilePicture.postImage(pickedImage!, userData.currentUsername).then((value) => userProfilePicture.changeUserSettings(userProfilePicture.userSettingsId, userData.currentUsernameId, userProfilePicture.userSettings?.fontFamily as String, "Yes").then((_) {userProfilePicture.userProfilePicture = Image.file(pickedImage!); }));
       });
     }
-
 
     return Scaffold(
       appBar: AppBar(
@@ -83,6 +82,7 @@ class _AccountState extends State<Account> {
                     ElevatedButton.icon(
                         onPressed: () {
                           // clears the stack.
+
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -96,7 +96,7 @@ class _AccountState extends State<Account> {
                     ),
                     ElevatedButton.icon(
                         onPressed: () {
-                          userProfilePicture.grabImage(userData.currentUsername);
+
                         },
                         icon: const FaIcon(FontAwesomeIcons.solidUser,),
                         label: const Text("To Be Announced")

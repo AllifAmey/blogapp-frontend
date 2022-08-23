@@ -33,7 +33,7 @@ class UserAppSettingsProvider with ChangeNotifier {
     userSettings = UserAppSettings(fontFamily: changefontFamily);
   }
 
-  Future<void> changeUserSettings(int settingID, int userId, String newFontFamily) async {
+  Future<void> changeUserSettings(int settingID, int userId, String newFontFamily, String has_image) async {
     // Changes user settings with patch
     var url = 'http://10.0.2.2:8000/api/profilesetting-viewset/$settingID/';
 
@@ -44,7 +44,8 @@ class UserAppSettingsProvider with ChangeNotifier {
         {
           'id': settingID,
           'user': userId,
-          'font_style': newFontFamily
+          'font_style': newFontFamily,
+          'has_image': has_image,
         }));
     final jsonData = json.decode(response.body) as Map<String, dynamic>;
     print(jsonData);
@@ -99,7 +100,6 @@ class UserAppSettingsProvider with ChangeNotifier {
         // Handle any errors.
         return "Error";
       }
-
     }
     /*
     // potential django way steps:

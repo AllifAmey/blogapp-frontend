@@ -134,10 +134,22 @@ class _AccountBlogSettingsState extends State<AccountBlogSettings> {
       floatingActionButton: ElevatedButton(
         onPressed: () {
           // update method
-          currentUserSettings.changeUserSettings(
-              currentUserSettings.userSettingsId,
-              currentUser.currentUsernameId,
-              widget.currentFont as String);
+          if (currentUserSettings.userProfilePicture == null) {
+            currentUserSettings.changeUserSettings(
+                currentUserSettings.userSettingsId,
+                currentUser.currentUsernameId,
+                widget.currentFont as String,
+                "No"
+            );
+          }
+          else {
+            currentUserSettings.changeUserSettings(
+                currentUserSettings.userSettingsId,
+                currentUser.currentUsernameId,
+                widget.currentFont as String,
+                "Yes"
+            );
+          }
           Navigator.pop(context);
         },
         child: Text("Submit"),

@@ -36,12 +36,26 @@ class _LogInState extends State<LogIn> {
           user.currentUsername = userLoginUsername;
           UserSettings.currentUserSettings(userStatus['font_style']);
           UserSettings.userSettingsId = userStatus['setting_id'];
-          Navigator.of(context).pushNamed(TabsScreen.routeName);
+          if (userStatus['has_image'] == "No") {
+            print("No image laa");
+            UserSettings.userProfilePicture = null;
+            return "No image";
+          }
+          else {
+            return "User has image";
+          }
         }
         else {
           print(userStatus);
         }
-      }).then((value) => UserSettings.grabImage(user.currentUsername));
+      }).then((value) => {
+        if (value != "No image") {
+          print("hello"),
+          UserSettings.grabImage(user.currentUsername)},
+      Navigator.of(context).pushNamed(TabsScreen.routeName)
+
+      }
+      );
     }
 
 
