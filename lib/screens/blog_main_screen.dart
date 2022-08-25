@@ -37,6 +37,8 @@ class BlogMain extends StatelessWidget {
                         userName: blog.username as String,
                         blogTitle: blog.title as String,
                         blogContent: blog.blogContent as String,
+                        imageType: blog.image_type,
+                        imageUrl: blog.image_url,
                       );
                     }
                   )

@@ -28,7 +28,7 @@ class _TabsScreenState extends State<TabsScreen> {
       'title': 'Blogs from users'
     },
     {
-      'page': const BlogCreateForm(),
+      'page':  BlogCreateForm(),
       'title': 'Create a blog!'
     },
     {

@@ -60,7 +60,7 @@ class Blog extends StatelessWidget {
           LogIn.routeName : (ctx) => const LogIn(),
           SignUp.routeName : (ctx) => const SignUp(),
           BlogMain.routeName : (ctx) => const BlogMain(),
-          BlogCreateForm.routeName: (ctx) => const BlogCreateForm(),
+          BlogCreateForm.routeName: (ctx) => BlogCreateForm(),
           Account.routeName: (ctx) => const Account(),
           TabsScreen.routeName: (ctx) => TabsScreen(pageNumDefault: 0,),
           AccountSettings.routeName: (ctx) => const AccountSettings(),

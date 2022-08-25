@@ -27,6 +27,8 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
 
   String blogTitle = '';
   String blogContent = '';
+  String imageType = 'none';
+  String? imageURL;
   int _currentStep = 0;
   File? pickedImage;
   NetworkImage? pickedInternetImage;
@@ -38,9 +40,9 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
   Widget build(BuildContext context) {
     final userBlogUnconfirmed = Provider.of<UserBlogProvider>(context);
     final user = Provider.of<UserProvider>(context);
-    UserBlog _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: blogTitle, blogContent: blogContent);
+    UserBlog _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: blogTitle, blogContent: blogContent, image_type: imageType, image_url: imageURL,);
 
-    void blogConfirmationPage (BuildContext ctx ) {
+    void blogConfirmationPage (BuildContext ctx, String? imageType, String? imageUrl,) {
       // widget shown after user presses create blog button
       showModalBottomSheet(
         elevation: 100,
@@ -61,7 +63,11 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                       Navigator.of(ctx).pop();
                     }, child: const Text("Go back")),
                     ElevatedButton(onPressed: () {
-                      userBlogUnconfirmed.createBlog(_editedUserBlog);
+                      userBlogUnconfirmed.createBlog(_editedUserBlog, imageType, imageUrl,).then((_) {
+                        if (imageType!="internet") {
+                          userBlogUnconfirmed.postBlogImage(pickedImage!, _editedUserBlog.title as String);
+                        }
+                      });
                       Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
                     } , child: const Text("Create Blog")),
                   ],
@@ -97,8 +103,8 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                         setState(() {
                           pickedInternetImage = NetworkImage(urlImage.text);
                           _editedUserBlog = editedBlog;
-                          _editedUserBlog.image_type = "internet";
-                          _editedUserBlog.image_url = urlImage.text;
+                          imageType = "internet";
+                          imageURL = urlImage.text;
                           Navigator.pop(ctx);
                         });
                       }, child: const Text("Confirm"),),
@@ -125,7 +131,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
           pickedImage = File(pickedImageFile?.path as String);
           print(pickedImage);
           _editedUserBlog = editedBlog;
-          _editedUserBlog.image_type = "camera";
+          imageType = "camera";
         });
       }
       else if (imageTakenType == "gallery") {
@@ -133,13 +139,20 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
         setState(() {
           pickedImage = File(pickedImageFile?.path as String);
           print(pickedImage);
-          _editedUserBlog = editedBlog;
-          _editedUserBlog.image_type = "gallery";
+
+          imageType = "gallery";
         });
       }
     }
 
-    void saveForm(BuildContext ctx, [bool preview = false]) {
+    List<Widget>? _buildBlogPictureForm(bool pickedImage, bool pickedInternetImage) {
+      // create blog picture form to make code neater.
+      // from the list of widgets then use the seperator operator to display it.
+      // pickedImage!=null) | (pickedInternetImage != null)
+      return null;
+    }
+
+    void saveForm(BuildContext ctx, String imageType, String? imageUrl, [bool preview = false]) {
       // option to preview blog and to confirm
       if (preview == true) {
         _form.currentState?.save();
@@ -151,15 +164,16 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                     blogTitle: _editedUserBlog.title as String,
                     blogContent: _editedUserBlog.blogContent as String,
                     preview: true,
-                    image_type: _editedUserBlog.image_type as String,
-                    image_url: _editedUserBlog.image_url as String,
+                    imageType: imageType,
+                    imageUrl: imageUrl,
+                    imageFile: pickedImage,
                   );
                 }
             ));
       }
       else{
         _form.currentState?.save();
-        blogConfirmationPage(ctx);
+        blogConfirmationPage(ctx, imageType, imageUrl);
       }
     }
     // where the form is created
@@ -256,13 +270,13 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                 children: [
                       ElevatedButton(
                         onPressed: () {
-                          saveForm(context, true);
+                          saveForm(context, imageType, imageURL, true);
                         },
                         child: const Text("Preview!"),
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          saveForm(context);
+                          saveForm(context, imageType, imageURL);
                         },
                         child: const Text("Confirm Blog"),
                       ),
