@@ -4,7 +4,6 @@ A simple blog app.
 
 Planned features:
 Animation transitioning between screens.
-Selecting image from internet or gallery for blogs
 Selecting location for blog.
 Friend list feature
 Chat feature. 
@@ -16,6 +15,7 @@ Create Blogs
 Change default font style for blogs. 
 See blogs from all users.
 Select profile image from camera and image stored in backend
+Selecting image from internet or gallery for blogs and stored in the backend
 
 
 ## Getting Started
