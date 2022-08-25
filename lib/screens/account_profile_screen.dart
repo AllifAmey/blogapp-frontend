@@ -32,7 +32,8 @@ class _AccountState extends State<Account> {
       final pickedImageFile = await ImagePicker().pickImage(source: ImageSource.camera);
       setState(() {
         pickedImage= File(pickedImageFile?.path as String);
-        userProfilePicture.postImage(pickedImage!, userData.currentUsername).then((value) => userProfilePicture.changeUserSettings(userProfilePicture.userSettingsId, userData.currentUsernameId, userProfilePicture.userSettings?.fontFamily as String, "Yes").then((_) {userProfilePicture.userProfilePicture = Image.file(pickedImage!); }));
+        userProfilePicture.postImage(pickedImage!, userData.currentUsername).then((value) => userProfilePicture.changeUserSettings(userProfilePicture.userSettingsId, userData.currentUsernameId, userProfilePicture.userSettings?.fontFamily as String, "Yes"));
+        userProfilePicture.userProfilePicture = Image.file(pickedImage!);
       });
     }
 

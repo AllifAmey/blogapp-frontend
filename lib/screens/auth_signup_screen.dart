@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../providers/user_provider.dart';
+import '../providers/user_app_setting_provider.dart';
 
 import './tabs_screen.dart';
 
@@ -27,6 +28,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<UserProvider>(context);
+    final userSettings = Provider.of<UserAppSettingsProvider>(context);
 
     void saveform() {
       if (_form.currentState?.validate() as bool) {
@@ -34,8 +36,14 @@ class _SignUpState extends State<SignUp> {
         _form.currentState?.validate();
         _form.currentState?.save();
         // line below creates User, then adds a authentication token so that they can use login page and after authenticated gets the userid.
-        userData.createUser(username as String, pass1 as String).then((_) => userData.createUserAuth(username as String, pass1 as String)).then((_) => userData.loginUser(username as String, pass1 as String));
+        userData.createUser(username as String, pass1 as String).then((_) => userData.createUserAuth(username as String, pass1 as String)).then((_) => userData.loginUser(username as String, pass1 as String).then((user_values) {
+          // user values will be attached Icons user_values
+            userSettings.userSettingsId = user_values['setting_id'];
+            userSettings.currentUserSettings(user_values['font_style']);
+            userSettings.userProfilePicture = null;
+        }));
         userData.currentUsername = username as String;
+        userSettings.userProfilePicture = null;
         Navigator.of(context).pushNamed(TabsScreen.routeName);
       }
 

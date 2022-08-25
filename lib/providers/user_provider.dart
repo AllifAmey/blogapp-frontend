@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -21,7 +20,7 @@ class UserProvider with ChangeNotifier {
   }
 
 
-  Future<void> createUser(String userName, String userPass) async {
+  Future<Map<String, dynamic>> createUser(String userName, String userPass) async {
     const url = 'http://10.0.2.2:8000/api/register-viewset/';
 
     final response = await http.post(Uri.parse(url),headers: {
@@ -35,6 +34,7 @@ class UserProvider with ChangeNotifier {
 
     print(jsonData);
     print("I created the user!!");
+    return jsonData;
   }
 
   Future<void> createUserAuth(String userName, String userPass) async {

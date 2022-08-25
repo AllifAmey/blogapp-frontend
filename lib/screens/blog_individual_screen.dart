@@ -3,18 +3,22 @@ import 'package:flutter/material.dart';
 
 import '../providers/user_app_setting_provider.dart';
 
-class Blog extends StatelessWidget {
+class BlogScreen extends StatelessWidget {
   // individual blog screen
   String userName;
   String blogTitle;
   String blogContent;
   bool preview;
+  String image_type;
+  String image_url;
 
-  Blog({
+  BlogScreen({
     required this.userName,
     required this.blogTitle,
     required this.blogContent,
-    this.preview = false
+    this.preview = false,
+    this.image_type = "none",
+    this.image_url = "none"
   });
 
   @override
@@ -31,7 +35,7 @@ class Blog extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Image.asset("assets/images/default_blog_picture.png"),
+                child: image_type=="none" ? Image.asset("assets/images/default_blog_picture.png") : null,
               ),
               const SizedBox(
                 height: 30,

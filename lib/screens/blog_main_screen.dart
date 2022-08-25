@@ -33,7 +33,7 @@ class BlogMain extends StatelessWidget {
                 Navigator.of(ctx).push(
                   MaterialPageRoute(
                     builder: (_) {
-                      return Blog(
+                      return BlogScreen(
                         userName: blog.username as String,
                         blogTitle: blog.title as String,
                         blogContent: blog.blogContent as String,

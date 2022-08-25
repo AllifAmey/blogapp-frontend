@@ -8,17 +8,25 @@ class UserBlog {
   /*
   User can change:
   font-style,
-  font-size,
    */
 
   final String? username;
   final String? title;
   final String? blogContent;
-  late String? address;
-  late String? location;
+  final String? location;
+  late String? image_type;
+  late String? image_url;
 
 
-  UserBlog({required this.username, required this.title, required this.blogContent});
+
+  UserBlog({
+    required this.username,
+    required this.title,
+    required this.blogContent,
+    this.location,
+    this.image_type = "none",
+    this.image_url
+  });
 
 }
 
@@ -65,6 +73,22 @@ class UserBlogProvider with ChangeNotifier {
   }
 
   Future<void> createBlog(UserBlog blog) async {
+    const url = 'http://10.0.2.2:8000/api/userblog-viewset/';
+
+    final response = await http.post(Uri.parse(url),headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }, body: json.encode(
+        {
+          'user': int.parse(blog.username as String) , 'title': blog.title, 'content': blog.blogContent,
+        }));
+    final jsonData = json.decode(response.body) as Map<String, dynamic>;
+
+    print(jsonData);
+    print("I created the user!!");
+  }
+
+  Future<void> fetchBlogImage(UserBlog blog) async {
     const url = 'http://10.0.2.2:8000/api/userblog-viewset/';
 
     final response = await http.post(Uri.parse(url),headers: {

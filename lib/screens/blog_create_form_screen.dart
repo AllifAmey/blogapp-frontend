@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 import '../providers/user_provider.dart';
 import '../providers/user_blog_provider.dart';
@@ -20,17 +22,22 @@ class BlogCreateForm extends StatefulWidget {
 
 class _BlogCreateFormState extends State<BlogCreateForm> {
 
+
   final _form = GlobalKey<FormState>();
 
   String blogTitle = '';
   String blogContent = '';
   int _currentStep = 0;
+  File? pickedImage;
+  NetworkImage? pickedInternetImage;
+  bool imageFromInternet = false;
+  TextEditingController urlImage = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     final userBlogUnconfirmed = Provider.of<UserBlogProvider>(context);
     final user = Provider.of<UserProvider>(context);
-
     UserBlog _editedUserBlog = UserBlog(username: user.getUserId().toString(), title: blogTitle, blogContent: blogContent);
 
     void blogConfirmationPage (BuildContext ctx ) {
@@ -51,7 +58,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(onPressed: () {
-                      Navigator.pop(ctx);
+                      Navigator.of(ctx).pop();
                     }, child: const Text("Go back")),
                     ElevatedButton(onPressed: () {
                       userBlogUnconfirmed.createBlog(_editedUserBlog);
@@ -65,6 +72,73 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
       },);
     }
 
+    void _pickImageInternet(BuildContext ctx, UserBlog editedBlog) async {
+      //
+      showDialog(
+        context: ctx,
+        builder: (_) => Container(
+          height: 500,
+          child: AlertDialog(
+            title: Text("Image from Internet"),
+            content: Container(
+              height: 200,
+              child: Column(
+                children: [
+                  TextField(
+                    controller: urlImage,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Type url"
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      TextButton(onPressed: (){
+                        setState(() {
+                          pickedInternetImage = NetworkImage(urlImage.text);
+                          _editedUserBlog = editedBlog;
+                          _editedUserBlog.image_type = "internet";
+                          _editedUserBlog.image_url = urlImage.text;
+                          Navigator.pop(ctx);
+                        });
+                      }, child: const Text("Confirm"),),
+                      TextButton(onPressed: (){
+                        Navigator.pop(ctx);
+
+                      }, child: const Text("Go back"),),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        )
+      );
+    }
+
+    void _pickImage(String imageTakenType, UserBlog editedBlog) async {
+      // picks the image using the camera
+      // image is converted to a file class and stored in UserAppSettings Provider
+      if (imageTakenType == "camera") {
+        final pickedImageFile = await ImagePicker().pickImage(source: ImageSource.camera);
+        setState(() {
+          pickedImage = File(pickedImageFile?.path as String);
+          print(pickedImage);
+          _editedUserBlog = editedBlog;
+          _editedUserBlog.image_type = "camera";
+        });
+      }
+      else if (imageTakenType == "gallery") {
+        final pickedImageFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+        setState(() {
+          pickedImage = File(pickedImageFile?.path as String);
+          print(pickedImage);
+          _editedUserBlog = editedBlog;
+          _editedUserBlog.image_type = "gallery";
+        });
+      }
+    }
+
     void saveForm(BuildContext ctx, [bool preview = false]) {
       // option to preview blog and to confirm
       if (preview == true) {
@@ -72,11 +146,13 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
         Navigator.of(ctx).push(
             MaterialPageRoute(
                 builder: (_) {
-                  return Blog(
+                  return BlogScreen(
                     userName: _editedUserBlog.username as String,
                     blogTitle: _editedUserBlog.title as String,
                     blogContent: _editedUserBlog.blogContent as String,
                     preview: true,
+                    image_type: _editedUserBlog.image_type as String,
+                    image_url: _editedUserBlog.image_url as String,
                   );
                 }
             ));
@@ -146,9 +222,32 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
               title: Text("Location"),
               content: Text("Location")
           ),
-          const Step(
+          Step(
               title: Text("Picture"),
-              content: Text("Picture")
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  (pickedImage!=null) | (pickedInternetImage != null) ? Image(image: pickedInternetImage==null ? FileImage(pickedImage!): pickedInternetImage as ImageProvider, height: 100, width: 100,) : TextButton(onPressed: () {
+                    _pickImage("camera", _editedUserBlog);
+                  } , child: const Text("Camera?")),
+                  if ((pickedImage==null) & (pickedInternetImage == null)) TextButton(onPressed: () {_pickImage("gallery", _editedUserBlog);}, child: const Text("Gallery?")),
+                  if ((pickedImage==null) & (pickedInternetImage == null)) TextButton(onPressed: () {_pickImageInternet(context, _editedUserBlog);}, child: const Text("Internet?"),),
+                  if ((pickedImage!=null) | (pickedInternetImage != null)) Column(children: [
+                    Text("Satisfied?"),
+                    Row(
+                      children: [
+                        TextButton(onPressed: () {
+                          setState(() {
+                            pickedImage = null;
+                            pickedInternetImage = null;
+                          });
+                        }, child: const Text("No")),
+                        TextButton(onPressed: () {}, child: const Text("Yes"),)
+                      ],
+                    )
+                  ],)
+                ],
+              )
           ),
           Step(
               title: const Text("Confirm"),
