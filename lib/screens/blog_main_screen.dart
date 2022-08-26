@@ -2,11 +2,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../providers/user_provider.dart';
 import '../providers/user_blog_provider.dart';
 
-import './blog_create_form_screen.dart';
-import './account_profile_screen.dart';
 import './blog_individual_screen.dart';
 
 class BlogMain extends StatelessWidget {
