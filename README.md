@@ -5,10 +5,10 @@ A simple blog app.
 Planned features:
 Animation transitioning between screens.
 Selecting location for blog.
-Friend list feature
 Chat feature. 
 
 Current features:
+Friend list feature - frontend only
 Create User
 Log in as User
 Create Blogs
