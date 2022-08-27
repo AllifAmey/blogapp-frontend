@@ -19,16 +19,48 @@ class _FriendScreenState extends State<FriendScreen> {
 
   int _selectedIndex = 0;
 
+  List<Map<String, dynamic>> friendFeatures = [
+    {
+    'label': 'Friends',
+    'icon': const FaIcon(FontAwesomeIcons.userGroup)
+    },
+    {
+      'label': 'Friend\ninvites',
+      'icon': const FaIcon(FontAwesomeIcons.userPlus)
+    },
+    {
+      'label': 'Block\nlist',
+      'icon': const FaIcon(FontAwesomeIcons.userShield)
+    },
+    {
+      'label': 'Fellow\nusers',
+      'icon': const FaIcon(FontAwesomeIcons.users)
+    },
+  ];
+
+  List<NavigationRailDestination>? _buildNavigationDestination(List<Map<String, dynamic>> friendFeaturesList) {
+    List<NavigationRailDestination> fullFeatureList = [];
+
+    for (var i=0; i<friendFeaturesList.length; i++) {
+      fullFeatureList.add(
+        NavigationRailDestination(
+          icon: friendFeaturesList[i]['icon'],
+          label: Text(friendFeaturesList[i]['label']),
+        ),
+      );
+    }
+    return fullFeatureList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Friend's list")),
+        title: const Center(child: Text("Friend's list")),
       ),
       body: Row(
         children: <Widget>[
           NavigationRail(
-
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
               setState(() {
@@ -36,23 +68,8 @@ class _FriendScreenState extends State<FriendScreen> {
               });
             },
             labelType: NavigationRailLabelType.all,
-            destinations: const <NavigationRailDestination>[
-              NavigationRailDestination(
-                icon: FaIcon(FontAwesomeIcons.userGroup),
-                label: Text('Friends'),
-              ),
-              NavigationRailDestination(
-                icon: FaIcon(FontAwesomeIcons.userPlus),
-                label: Text('Friend\ninvites', textAlign: TextAlign.center,),
-              ),
-              NavigationRailDestination(
-                icon: FaIcon(FontAwesomeIcons.userShield),
-                label: Text('Block\nlist'),
-              ),
-              NavigationRailDestination(
-                icon: FaIcon(FontAwesomeIcons.users),
-                label: Text('Fellow\nusers'),
-              ),
+            destinations: <NavigationRailDestination>[
+              ...?_buildNavigationDestination(friendFeatures)
             ],
           ),
           const VerticalDivider(thickness: 1, width: 1),

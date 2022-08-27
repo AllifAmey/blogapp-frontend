@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserProvider with ChangeNotifier {
-
-
   UserProvider();
 
   String currentUsername = "";
@@ -19,16 +17,18 @@ class UserProvider with ChangeNotifier {
     return currentUsernameId;
   }
 
-
-  Future<Map<String, dynamic>> createUser(String userName, String userPass) async {
+  Future<Map<String, dynamic>> createUser(
+      String userName, String userPass) async {
     const url = 'http://10.0.2.2:8000/api/register-viewset/';
 
-    final response = await http.post(Uri.parse(url),headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }, body: json.encode(
-        {
-          'username': userName, 'password': userPass,
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'username': userName,
+          'password': userPass,
         }));
     final jsonData = json.decode(response.body) as Map<String, dynamic>;
 
@@ -41,12 +41,14 @@ class UserProvider with ChangeNotifier {
     //This creates the authentication for the user
     const url = 'http://10.0.2.2:8000/api/signup/';
 
-    final response = await http.post(Uri.parse(url),headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }, body: json.encode(
-        {
-          'username': userName, 'password': userPass,
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'username': userName,
+          'password': userPass,
         }));
     final jsonData = json.decode(response.body) as Map<String, dynamic>;
 
@@ -54,15 +56,18 @@ class UserProvider with ChangeNotifier {
     print("I created the user Authentication");
   }
 
-  Future<Map<String, dynamic>> loginUser(String userName, String userPass) async {
+  Future<Map<String, dynamic>> loginUser(
+      String userName, String userPass) async {
     // Authenticates user and returns values attached to user if authenticated
     const url = 'http://10.0.2.2:8000/api/auth/login/';
-    final response = await http.post(Uri.parse(url),headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }, body: json.encode(
-        {
-          'username': userName, 'password': userPass,
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'username': userName,
+          'password': userPass,
         }));
     final jsonData = json.decode(response.body) as Map<String, dynamic>;
 
@@ -72,10 +77,8 @@ class UserProvider with ChangeNotifier {
       currentUsernameId = jsonData['user_id'];
       // "authenticated"
       return jsonData;
-    }
-    else {
+    } else {
       return jsonData;
     }
   }
-
 }

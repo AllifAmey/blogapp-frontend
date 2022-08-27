@@ -17,28 +17,14 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-
   _TabsScreenState();
 
   final List<Map<String, Object>> _pages = [
-    {
-      'page': const BlogMain(),
-      'title': 'Blogs from users'
-    },
-    {
-      'page':  BlogCreateForm(),
-      'title': 'Create a blog!'
-    },
-    {
-      'page': FriendScreen(),
-      'title': 'Friends Page'
-    },
-    {
-      'page': const Account(),
-      'title': 'Account Page'
-    },
+    {'page': const BlogMain(), 'title': 'Blogs from users'},
+    {'page': const BlogCreateForm(), 'title': 'Create a blog!'},
+    {'page': const FriendScreen(), 'title': 'Friends Page'},
+    {'page': const Account(), 'title': 'Account Page'},
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +35,7 @@ class _TabsScreenState extends State<TabsScreen> {
         widget.pageNumDefault = index;
       });
     }
+
     return Scaffold(
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(

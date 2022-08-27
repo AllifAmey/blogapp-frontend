@@ -10,51 +10,42 @@ class BlogMain extends StatelessWidget {
   static const routeName = 'blog-main/';
   const BlogMain({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-
     final userBlog = Provider.of<UserBlogProvider>(context);
 
     List<Widget> createBlogList(BuildContext ctx) {
-
       // function that returns a list of blogs or a list of widgets .
 
       final userBlogList = userBlog.blog_list;
       List<Widget> blogListWidgets = [];
       userBlogList.map((blog) {
-        blogListWidgets.add(
-            GestureDetector(
-              onTap: () {
-                //
-                Navigator.of(ctx).push(
-                  MaterialPageRoute(
-                    builder: (_) {
-                      return BlogScreen(
-                        userName: blog.username as String,
-                        blogTitle: blog.title as String,
-                        blogContent: blog.blogContent as String,
-                        imageType: blog.image_type,
-                        imageUrl: blog.image_url,
-                      );
-                    }
-                  )
-                );
-              },
-              child: Container(
-                height: 50,
-                child: Card(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("${blog.username as String}'s Blog: "),
-                      Text(blog.title as String),
-                    ],
-                  ),
-                ),
+        blogListWidgets.add(GestureDetector(
+          onTap: () {
+            //
+            Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
+              return BlogScreen(
+                userName: blog.username as String,
+                blogTitle: blog.title as String,
+                blogContent: blog.blogContent as String,
+                imageType: blog.image_type,
+                imageUrl: blog.image_url,
+              );
+            }));
+          },
+          child: Container(
+            height: 50,
+            child: Card(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("${blog.username as String}'s Blog: "),
+                  Text(blog.title as String),
+                ],
               ),
-            )
-        );
+            ),
+          ),
+        ));
       }).toList();
       return blogListWidgets;
     }
@@ -70,25 +61,24 @@ class BlogMain extends StatelessWidget {
           ],
         ),
       ),
-        body: FutureBuilder(
-          future: userBlog.fetchBlogs(),
-          builder: (context, dataSnapshot) {
-            if (dataSnapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(),);
-            }
-            else {
-              return Container(
-                height: 700,
-                child: ListView(
-                  padding: const EdgeInsets.all(8),
-                  children: createBlogList(context),
-                ),
-              );
-            }
-          },
-        ),
+      body: FutureBuilder(
+        future: userBlog.fetchBlogs(),
+        builder: (context, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Container(
+              height: 700,
+              child: ListView(
+                padding: const EdgeInsets.all(8),
+                children: createBlogList(context),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
-
-

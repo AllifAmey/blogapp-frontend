@@ -14,14 +14,10 @@ class UserAppSettings {
 
   final String? fontFamily;
 
-
   UserAppSettings({required this.fontFamily});
-
 }
 
 class UserAppSettingsProvider with ChangeNotifier {
-
-
   UserAppSettingsProvider();
 
   UserAppSettings? userSettings;
@@ -33,15 +29,17 @@ class UserAppSettingsProvider with ChangeNotifier {
     userSettings = UserAppSettings(fontFamily: changefontFamily);
   }
 
-  Future<void> changeUserSettings(int settingID, int userId, String newFontFamily, String has_image) async {
+  Future<void> changeUserSettings(
+      int settingID, int userId, String newFontFamily, String has_image) async {
     // Changes user settings with patch
     var url = 'http://10.0.2.2:8000/api/profilesetting-viewset/$settingID/';
 
-    final response = await http.patch(Uri.parse(url),headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }, body: json.encode(
-        {
+    final response = await http.patch(Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
           'id': settingID,
           'user': userId,
           'font_style': newFontFamily,
@@ -52,27 +50,25 @@ class UserAppSettingsProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       userSettings = UserAppSettings(fontFamily: newFontFamily);
     }
-
   }
 
   Future<void> postImage(File imageCamera, String username) async {
     // uploading image to firebase storage
 
     // ref location in storage
-    final storageRef = FirebaseStorage.instance.ref(
-        "images/user_profile_pictures");
+    final storageRef =
+        FirebaseStorage.instance.ref("images/user_profile_pictures");
 
     // Create a reference
     final profilePictureRef = storageRef.child("$username.jpg");
 
     // Create a reference to 'images/$username.jpg'
-    final profilePictureImagesRef = storageRef.child(
-        "images/user_profile_pictures/$username.jpg");
+    final profilePictureImagesRef =
+        storageRef.child("images/user_profile_pictures/$username.jpg");
 
     // the references point to different files
     assert(profilePictureRef.name == profilePictureImagesRef.name);
     assert(profilePictureRef.fullPath != profilePictureImagesRef.fullPath);
-
 
     try {
       await profilePictureRef.putFile(imageCamera);
@@ -81,27 +77,28 @@ class UserAppSettingsProvider with ChangeNotifier {
     }
   }
 
-    Future<String?> grabImage(String username) async {
-      // grab image from fire storage and place it in profile picture.
+  Future<String?> grabImage(String username) async {
+    // grab image from fire storage and place it in profile picture.
 
-      // Create a storage reference from the app
-      final storageRef = FirebaseStorage.instance.ref();
+    // Create a storage reference from the app
+    final storageRef = FirebaseStorage.instance.ref();
 
-      final userProfileImageRef = storageRef.child("images/user_profile_pictures/$username.jpg");
+    final userProfileImageRef =
+        storageRef.child("images/user_profile_pictures/$username.jpg");
 
-      try {
-        const oneMegabyte = 1024 * 1024;
-        final Uint8List? data = await userProfileImageRef.getData(oneMegabyte);
-        // Data for "images/island.jpg" is returned, use this as needed.
-        print(data.runtimeType);
-        userProfilePicture = Image.memory(data!);
-        return "Success";
-      } on FirebaseException catch (e) {
-        // Handle any errors.
-        return "Error";
-      }
+    try {
+      const oneMegabyte = 1024 * 1024;
+      final Uint8List? data = await userProfileImageRef.getData(oneMegabyte);
+      // Data for "images/island.jpg" is returned, use this as needed.
+      print(data.runtimeType);
+      userProfilePicture = Image.memory(data!);
+      return "Success";
+    } on FirebaseException catch (e) {
+      // Handle any errors.
+      return "Error";
     }
-    /*
+  }
+  /*
     // potential django way steps:
       1. upload image to imgur
       2. grab url of image from the response and store in django ProfileSettings model.
@@ -133,9 +130,6 @@ class UserAppSettingsProvider with ChangeNotifier {
         print("It worked!!");
       }
     });*/
-
-
-
 
 /*
 

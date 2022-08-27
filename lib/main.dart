@@ -22,13 +22,20 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (ctx) => UserProvider(),),
-        ChangeNotifierProvider(create: (ctx) => UserAppSettingsProvider(),),
-        ChangeNotifierProvider(create: (ctx) => UserProvider(),),
-        ChangeNotifierProvider(create: (ctx) => UserBlogProvider(),)
-      ], child: const Blog()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (ctx) => UserProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (ctx) => UserAppSettingsProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (ctx) => UserProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (ctx) => UserBlogProvider(),
+    )
+  ], child: const Blog()));
 }
 
 class Blog extends StatelessWidget {
@@ -39,8 +46,8 @@ class Blog extends StatelessWidget {
     return MaterialApp(
       // headline small, for blog title
       // body medium, for blog content
-        theme: ThemeData(
-          textTheme: const TextTheme(
+      theme: ThemeData(
+        textTheme: const TextTheme(
             // blog's title
             headlineSmall: TextStyle(
               fontSize: 40,
@@ -48,24 +55,24 @@ class Blog extends StatelessWidget {
             // App text content in general
             bodyMedium: TextStyle(
               fontSize: 20,
-
-            )
-          ),
-          appBarTheme: const AppBarTheme(
+            )),
+        appBarTheme: const AppBarTheme(
             // color: Colors.deepOrange,
-          ),
-        ),
-        routes: {
-          '/': (ctx) => const HomePage(),
-          LogIn.routeName : (ctx) => const LogIn(),
-          SignUp.routeName : (ctx) => const SignUp(),
-          BlogMain.routeName : (ctx) => const BlogMain(),
-          BlogCreateForm.routeName: (ctx) => BlogCreateForm(),
-          Account.routeName: (ctx) => const Account(),
-          TabsScreen.routeName: (ctx) => TabsScreen(pageNumDefault: 0,),
-          AccountSettings.routeName: (ctx) => const AccountSettings(),
-          AccountBlogSettings.routeName: (ctx) => AccountBlogSettings(),
-        },
-      );
+            ),
+      ),
+      routes: {
+        '/': (ctx) => const HomePage(),
+        LogIn.routeName: (ctx) => const LogIn(),
+        SignUp.routeName: (ctx) => const SignUp(),
+        BlogMain.routeName: (ctx) => const BlogMain(),
+        BlogCreateForm.routeName: (ctx) => const BlogCreateForm(),
+        Account.routeName: (ctx) => const Account(),
+        TabsScreen.routeName: (ctx) => TabsScreen(
+              pageNumDefault: 0,
+            ),
+        AccountSettings.routeName: (ctx) => const AccountSettings(),
+        AccountBlogSettings.routeName: (ctx) => AccountBlogSettings(),
+      },
+    );
   }
 }

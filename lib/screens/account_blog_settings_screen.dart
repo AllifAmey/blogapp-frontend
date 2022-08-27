@@ -18,18 +18,55 @@ class AccountBlogSettings extends StatefulWidget {
 }
 
 class _AccountBlogSettingsState extends State<AccountBlogSettings> {
-
-
   @override
   Widget build(BuildContext context) {
     final currentUser = Provider.of<UserProvider>(context);
     final currentUserSettings = Provider.of<UserAppSettingsProvider>(context);
+
+    List<String> fontStyleList = [
+      "Roboto",
+      "Merriweather",
+      "Lobster",
+      "IndieFlower"
+    ];
 
     if (widget.currentFont == "") {
       setState(() {
         widget.currentFont = currentUserSettings.userSettings?.fontFamily;
       });
     }
+    List<Widget> _buildListTileFontStyle(List<String> fontStyleList ) {
+      // builder method to add more font-styles in the future
+      // To add more fontstyles, add String to the fontStyleList only
+
+      List<Widget> fontStyleWidgetList = [];
+      for (var i=0; i<fontStyleList.length; i++) {
+        fontStyleWidgetList.add(
+            ListTile(
+              title: Text(
+                fontStyleList[i],
+                style: TextStyle(
+                  fontFamily: fontStyleList[i],
+                ),
+              ),
+              trailing: Switch(
+                value: widget.currentFont == fontStyleList[i] ? true : false,
+                onChanged: (value) {
+                  setState(() {
+                    if (value == true) {
+                      widget.currentFont = fontStyleList[i];
+                    }
+                  });
+                },
+                activeTrackColor: Colors.lightGreenAccent,
+                activeColor: Colors.green,
+              ),
+            )
+        );
+      }
+      return fontStyleWidgetList;
+    }
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -38,97 +75,12 @@ class _AccountBlogSettingsState extends State<AccountBlogSettings> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         children: [
-          ListTile(
-              title: Text("Blog Font Size",
-              textAlign: TextAlign.center,)
-          ),
-          ListTile(
-            title: const Text("Font Size"),
-            trailing: Container(
-              width: 30,
-              child: TextFormField(
-              ),
-            ),
-          ),
-          ListTile(
-              title: Text("Blog Font Style",
-                  textAlign: TextAlign.center,)
-          ),
-          ListTile(
-              title: Text("Roboto",
-              style: TextStyle(
-                fontFamily: "Roboto"
-              ),),
-            trailing: Switch(
-              value: widget.currentFont == "Roboto" ? true : false,
-              onChanged: (value) {
-                setState(() {
-                  if (value == true) {
-                    widget.currentFont = "Roboto";
-                  }
-                });
-              },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
-            ),
-          ),
-          ListTile(
-            title: Text("Merriweather",
-            style: TextStyle(
-              fontFamily: "Merriweather",
-            ),),
-            trailing: Switch(
-              value: widget.currentFont == "Merriweather" ? true : false,
-              onChanged: (value) {
-                setState(() {
-                  if (value == true) {
-                    widget.currentFont = "Merriweather";
-                  }
-                });
-              },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
-            ),
-          ),
-          ListTile(
-            title: Text("Lobster",
-            style: TextStyle(
-              fontFamily: "Lobster",
-              letterSpacing: 5,
-              fontSize: 20,
-            )),
-            trailing: Switch(
-              value: widget.currentFont == "Lobster" ? true : false,
-              onChanged: (value) {
-                setState(() {
-                  if (value == true) {
-                    widget.currentFont = "Lobster";
-                  }
-                });
-              },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
-            ),
-          ),
-          ListTile(
-            title: Text("IndieFlower",
-            style: TextStyle(
-              fontFamily: "IndieFlower",
-              fontSize: 20,
-            ),),
-            trailing: Switch(
-              value: widget.currentFont == "IndieFlower" ? true : false,
-              onChanged: (value) {
-                setState(() {
-                  if (value == true) {
-                    widget.currentFont = "IndieFlower";
-                  }
-                });
-              },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
-            ),
-          ),
+          const ListTile(
+              title: Text(
+            "Blog Font Style",
+            textAlign: TextAlign.center,
+          )),
+          ..._buildListTileFontStyle(fontStyleList)
         ],
       ),
       floatingActionButton: ElevatedButton(
@@ -139,20 +91,17 @@ class _AccountBlogSettingsState extends State<AccountBlogSettings> {
                 currentUserSettings.userSettingsId,
                 currentUser.currentUsernameId,
                 widget.currentFont as String,
-                "No"
-            );
-          }
-          else {
+                "No");
+          } else {
             currentUserSettings.changeUserSettings(
                 currentUserSettings.userSettingsId,
                 currentUser.currentUsernameId,
                 widget.currentFont as String,
-                "Yes"
-            );
+                "Yes");
           }
           Navigator.pop(context);
         },
-        child: Text("Submit"),
+        child: const Text("Submit"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

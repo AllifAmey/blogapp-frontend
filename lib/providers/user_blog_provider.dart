@@ -19,28 +19,21 @@ class UserBlog {
   late String? image_type;
   late String? image_url;
 
-
-
-  UserBlog({
-    this.username,
-    this.title,
-    this.blogContent,
-    this.location,
-    this.image_type = "none",
-    this.image_url
-  });
-
+  UserBlog(
+      {this.username,
+      this.title,
+      this.blogContent,
+      this.location,
+      this.image_type = "none",
+      this.image_url});
 }
 
 class UserBlogProvider with ChangeNotifier {
-
-
   UserBlogProvider();
 
   List<UserBlog> blog_list = [];
 
   Image? blogTempImage;
-
 
   /*
   void createBlog(UserBlog blog) {
@@ -67,28 +60,33 @@ class UserBlogProvider with ChangeNotifier {
     final response = await http.get(Uri.parse(url));
     final userblogs = json.decode(response.body);
 
-    for(var i=0;i<userblogs.length;i++){
+    for (var i = 0; i < userblogs.length; i++) {
       blog_list.add(UserBlog(
-            username: userblogs[i]["author"],
-            title: userblogs[i]["title"],
-            blogContent: userblogs[i]["content"],
-            image_type:userblogs[i]["image_type"],
-            image_url: userblogs[i]["image_url"],
-        ));
+        username: userblogs[i]["author"],
+        title: userblogs[i]["title"],
+        blogContent: userblogs[i]["content"],
+        image_type: userblogs[i]["image_type"],
+        image_url: userblogs[i]["image_url"],
+      ));
     }
-
   }
 
-  Future<void> createBlog(UserBlog blog, String? imageType, String? imageUrl) async {
+  Future<void> createBlog(
+      UserBlog blog, String? imageType, String? imageUrl) async {
     const url = 'http://10.0.2.2:8000/api/userblog-viewset/';
     print(imageUrl);
 
-    final response = await http.post(Uri.parse(url),headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }, body: json.encode(
-        {
-          'user': int.parse(blog.username as String) , 'title': blog.title, 'content': blog.blogContent, 'image_type': imageType, 'image_url': imageUrl
+    final response = await http.post(Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'user': int.parse(blog.username as String),
+          'title': blog.title,
+          'content': blog.blogContent,
+          'image_type': imageType,
+          'image_url': imageUrl
         }));
     final jsonData = json.decode(response.body) as Map<String, dynamic>;
 
@@ -99,22 +97,19 @@ class UserBlogProvider with ChangeNotifier {
   Future<void> postBlogImage(File imageCamera, String title) async {
     // uploading blog image to firebase storage
 
-
     // ref location in storage
-    final storageRef = FirebaseStorage.instance.ref(
-        "images/blogs");
+    final storageRef = FirebaseStorage.instance.ref("images/blogs");
 
     // Create a reference
     final profilePictureRef = storageRef.child("$title.jpg");
 
     // Create a reference to 'images/$username.jpg'
-    final profilePictureImagesRef = storageRef.child(
-        "images/user_profile_pictures/$title.jpg");
+    final profilePictureImagesRef =
+        storageRef.child("images/user_profile_pictures/$title.jpg");
 
     // the references point to different files
     assert(profilePictureRef.name == profilePictureImagesRef.name);
     assert(profilePictureRef.fullPath != profilePictureImagesRef.fullPath);
-
 
     try {
       await profilePictureRef.putFile(imageCamera);
@@ -122,7 +117,6 @@ class UserBlogProvider with ChangeNotifier {
       // ...
     }
   }
-
 
   Future<void> grabBlogImage(String blogTitle) async {
     // grab blog image from fire storage .
@@ -142,11 +136,6 @@ class UserBlogProvider with ChangeNotifier {
       // Handle any errors.
     }
   }
-
-
-
-
-
 
 /*
 

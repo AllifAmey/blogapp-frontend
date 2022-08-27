@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,10 +28,17 @@ class _AccountState extends State<Account> {
     void _pickImage() async {
       // picks the image using the camera
       // image is converted to a file class and stored in UserAppSettings Provider
-      final pickedImageFile = await ImagePicker().pickImage(source: ImageSource.camera);
+      final pickedImageFile =
+          await ImagePicker().pickImage(source: ImageSource.camera);
       setState(() {
-        pickedImage= File(pickedImageFile?.path as String);
-        userProfilePicture.postImage(pickedImage!, userData.currentUsername).then((value) => userProfilePicture.changeUserSettings(userProfilePicture.userSettingsId, userData.currentUsernameId, userProfilePicture.userSettings?.fontFamily as String, "Yes"));
+        pickedImage = File(pickedImageFile?.path as String);
+        userProfilePicture
+            .postImage(pickedImage!, userData.currentUsername)
+            .then((value) => userProfilePicture.changeUserSettings(
+                userProfilePicture.userSettingsId,
+                userData.currentUsernameId,
+                userProfilePicture.userSettings?.fontFamily as String,
+                "Yes"));
         userProfilePicture.userProfilePicture = Image.file(pickedImage!);
       });
     }
@@ -52,22 +58,28 @@ class _AccountState extends State<Account> {
           ),
           child: Column(
             children: [
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Text(userData.getUser()),
-              const SizedBox(height: 20,),
-              Stack(
-                alignment: AlignmentDirectional.center,
-                children: [CircleAvatar(
-                    radius: 200,
-                    backgroundImage: userProfilePicture.userProfilePicture==null ? const AssetImage('assets/images/default_user_profile_img.png') : userProfilePicture.userProfilePicture?.image,
+              const SizedBox(
+                height: 20,
+              ),
+              Stack(alignment: AlignmentDirectional.center, children: [
+                CircleAvatar(
+                  radius: 200,
+                  backgroundImage: userProfilePicture.userProfilePicture == null
+                      ? const AssetImage(
+                          'assets/images/default_user_profile_img.png')
+                      : userProfilePicture.userProfilePicture?.image,
                 ),
-                  if (userProfilePicture.userProfilePicture==null) IconButton(
+                if (userProfilePicture.userProfilePicture == null)
+                  IconButton(
                     iconSize: 150.0,
                     onPressed: _pickImage,
                     icon: const FaIcon(FontAwesomeIcons.camera),
                   )
-                ]
-              ),
+              ]),
               Container(
                 height: 200,
                 padding: const EdgeInsets.all(20),
@@ -75,11 +87,13 @@ class _AccountState extends State<Account> {
                   children: [
                     ElevatedButton.icon(
                         onPressed: () {
-                          Navigator.of(context).pushReplacementNamed(AccountSettings.routeName);
+                          Navigator.of(context)
+                              .pushReplacementNamed(AccountSettings.routeName);
                         },
-                        icon: const FaIcon(FontAwesomeIcons.solidUser,),
-                        label: const Text("Account Settings")
-                    ),
+                        icon: const FaIcon(
+                          FontAwesomeIcons.solidUser,
+                        ),
+                        label: const Text("Account Settings")),
                     ElevatedButton.icon(
                         onPressed: () {
                           // clears the stack.
@@ -87,22 +101,22 @@ class _AccountState extends State<Account> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (BuildContext context) => const HomePage(),
+                              builder: (BuildContext context) =>
+                                  const HomePage(),
                             ),
-                                (route) => false,
+                            (route) => false,
                           );
                         },
-                        icon: const FaIcon(FontAwesomeIcons.solidUser,),
-                        label: const Text("Log Out")
-                    ),
+                        icon: const FaIcon(
+                          FontAwesomeIcons.solidUser,
+                        ),
+                        label: const Text("Log Out")),
                     ElevatedButton.icon(
-                        onPressed: () {
-
-                        },
-                        icon: const FaIcon(FontAwesomeIcons.solidUser,),
-                        label: const Text("To Be Announced")
-                    ),
-
+                        onPressed: () {},
+                        icon: const FaIcon(
+                          FontAwesomeIcons.solidUser,
+                        ),
+                        label: const Text("To Be Announced")),
                   ],
                 ),
               )
