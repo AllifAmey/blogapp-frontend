@@ -26,6 +26,25 @@ class _TabsScreenState extends State<TabsScreen> {
     {'page': const Account(), 'title': 'Account Page'},
   ];
 
+  final List<Map<String, dynamic>> tabInfo = [
+    {
+      'icon': const FaIcon(FontAwesomeIcons.blog),
+      'label': 'Blogs',
+    },
+    {
+      'icon': const FaIcon(FontAwesomeIcons.pen),
+      'label': 'Create blog',
+    },
+    {
+      'icon': const FaIcon(FontAwesomeIcons.peopleGroup),
+      'label': 'Friends',
+    },
+    {
+      'icon': const FaIcon(FontAwesomeIcons.solidUser),
+      'label': 'Account',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     int _selectedPageIndex = widget.pageNumDefault;
@@ -36,6 +55,19 @@ class _TabsScreenState extends State<TabsScreen> {
       });
     }
 
+    List<BottomNavigationBarItem> _buildTabsAll(
+        List<Map<String, dynamic>> tabInfo) {
+      List<BottomNavigationBarItem> tabs = [];
+
+      tabs = tabInfo
+          .map((tab) =>
+              BottomNavigationBarItem(icon: tab['icon'], label: tab['label']))
+          .toList();
+      return tabs;
+    }
+
+    ;
+
     return Scaffold(
       body: _pages[_selectedPageIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
@@ -44,24 +76,7 @@ class _TabsScreenState extends State<TabsScreen> {
         onTap: _selectPage,
         currentIndex: widget.pageNumDefault,
         type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.blog),
-            label: "Blogs",
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.pen),
-            label: "Create blog",
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.peopleGroup),
-            label: "Friends",
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.solidUser),
-            label: "Account",
-          ),
-        ],
+        items: [..._buildTabsAll(tabInfo)],
       ),
     );
   }
