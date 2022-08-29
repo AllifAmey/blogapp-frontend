@@ -14,15 +14,18 @@ class BlogScreen extends StatelessWidget {
   String? imageType;
   String? imageUrl;
   File? imageFile;
+  String? blogFontStyle;
 
   BlogScreen({
     required this.userName,
     required this.blogTitle,
     required this.blogContent,
+    required this.blogFontStyle,
     this.preview = false,
     this.imageType = "none",
     this.imageUrl = "none",
     this.imageFile = null,
+
   });
 
   Widget? _buildBlogImage(String? imageType, String? imageUrl,
@@ -77,7 +80,7 @@ class BlogScreen extends StatelessWidget {
               ),
               Text(blogTitle!,
                   style: TextStyle(
-                    fontFamily: userblogSettings.userSettings?.fontFamily,
+                    fontFamily: blogFontStyle,
                     fontSize: 30,
                   )),
               const SizedBox(
@@ -89,7 +92,7 @@ class BlogScreen extends StatelessWidget {
                   blogContent!,
                   style: TextStyle(
                     fontSize: 20,
-                    fontFamily: userblogSettings.userSettings?.fontFamily,
+                    fontFamily: blogFontStyle,
                   ),
                 ),
               ),

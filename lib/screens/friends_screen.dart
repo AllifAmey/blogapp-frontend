@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
 
 class FriendScreen extends StatefulWidget {
   const FriendScreen({Key? key}) : super(key: key);
@@ -54,9 +57,37 @@ class _FriendScreenState extends State<FriendScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final userInfo = Provider.of<UserProvider>(context);
+
+    List<Widget> _buildCardInfo(List<dynamic> info) {
+
+      List<Widget> infoCards = [];
+
+      for (var i=0; i<info.length; i++) {
+        infoCards.add(
+            Card(
+              child: ListTile(
+                title: Text(info[i]['username']),
+                trailing: TextButton(
+                  onPressed: () {},
+                  child: Text("Request friend"),
+                ),
+              ),
+              elevation: 8,
+              shadowColor: Colors.green,
+              margin: EdgeInsets.all(5),
+            )
+        );
+      }
+
+
+      return infoCards;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("Friend's list")),
+        title: Center(child: Text('${friendFeatures[_selectedIndex]['label'].replaceAll('\n', " ")}',)),
       ),
       body: Row(
         children: <Widget>[
@@ -75,9 +106,30 @@ class _FriendScreenState extends State<FriendScreen> {
           const VerticalDivider(thickness: 1, width: 1),
           // This is the main content.
           Expanded(
-            child: Center(
-              child: Text('selectedIndex: $_selectedIndex'),
-            ),
+            child: FutureBuilder(
+              future: userInfo.getUsersRegistered(),
+              builder: (context, dataSnapshot) {
+              if (dataSnapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                print(dataSnapshot.data.runtimeType);
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Add other users and create blogs together!",
+                      style: TextStyle(
+                        fontSize: 15
+                      ),),
+                    ),
+                    ..._buildCardInfo(dataSnapshot.data as List<dynamic>)
+                  ],
+                );
+              }
+              },
+            )
           )
         ],
       ),

@@ -30,9 +30,6 @@ void main() async {
       create: (ctx) => UserAppSettingsProvider(),
     ),
     ChangeNotifierProvider(
-      create: (ctx) => UserProvider(),
-    ),
-    ChangeNotifierProvider(
       create: (ctx) => UserBlogProvider(),
     )
   ], child: const Blog()));

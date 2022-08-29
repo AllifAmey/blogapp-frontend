@@ -81,4 +81,19 @@ class UserProvider with ChangeNotifier {
       return jsonData;
     }
   }
+
+  Future<List<dynamic>> getUsersRegistered() async {
+    const url = 'http://10.0.2.2:8000/api/auth/login/';
+
+    final response = await http.get(Uri.parse(url),headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },);
+    final jsonData = json.decode(response.body) as List<dynamic>;
+
+    print(jsonData);
+    print("All users registered!");
+    return jsonData;
+  }
+
 }

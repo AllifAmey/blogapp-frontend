@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import '../providers/user_provider.dart';
+import '../providers/user_app_setting_provider.dart';
 import '../providers/user_blog_provider.dart';
 import '../widgets/blog_create_image.dart';
 import './blog_individual_screen.dart';
@@ -32,6 +33,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
 
   @override
   Widget build(BuildContext context) {
+    final userBlogSettings = Provider.of<UserAppSettingsProvider>(context);
     final userBlogUnconfirmed = Provider.of<UserBlogProvider>(context);
     final user = Provider.of<UserProvider>(context);
     UserBlog _editedUserBlog = UserBlog(
@@ -77,6 +79,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                               _editedUserBlog,
                               imageType,
                               imageUrl,
+                              userBlogSettings.userSettings?.fontFamily
                             )
                                 .then((_) {
                               if (imageType != "internet") {
@@ -273,6 +276,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
             userName: _editedUserBlog.username as String,
             blogTitle: _editedUserBlog.title as String,
             blogContent: _editedUserBlog.blogContent as String,
+            blogFontStyle: userBlogSettings.userSettings?.fontFamily,
             preview: true,
             imageType: imageType,
             imageUrl: imageUrl,

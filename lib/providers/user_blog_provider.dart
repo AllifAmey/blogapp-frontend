@@ -16,6 +16,7 @@ class UserBlog {
   final String? title;
   final String? blogContent;
   final String? location;
+  final String? blogFontStyle;
   late String? image_type;
   late String? image_url;
 
@@ -24,6 +25,7 @@ class UserBlog {
       this.title,
       this.blogContent,
       this.location,
+        this.blogFontStyle,
       this.image_type = "none",
       this.image_url});
 }
@@ -65,6 +67,7 @@ class UserBlogProvider with ChangeNotifier {
         username: userblogs[i]["author"],
         title: userblogs[i]["title"],
         blogContent: userblogs[i]["content"],
+        blogFontStyle: userblogs[i]["font_style"],
         image_type: userblogs[i]["image_type"],
         image_url: userblogs[i]["image_url"],
       ));
@@ -72,9 +75,9 @@ class UserBlogProvider with ChangeNotifier {
   }
 
   Future<void> createBlog(
-      UserBlog blog, String? imageType, String? imageUrl) async {
+      UserBlog blog, String? imageType, String? imageUrl, String? fontStyle) async {
     const url = 'http://10.0.2.2:8000/api/userblog-viewset/';
-    print(imageUrl);
+    print(fontStyle);
 
     final response = await http.post(Uri.parse(url),
         headers: {
@@ -86,7 +89,8 @@ class UserBlogProvider with ChangeNotifier {
           'title': blog.title,
           'content': blog.blogContent,
           'image_type': imageType,
-          'image_url': imageUrl
+          'image_url': imageUrl,
+          'font_style': fontStyle
         }));
     final jsonData = json.decode(response.body) as Map<String, dynamic>;
 
