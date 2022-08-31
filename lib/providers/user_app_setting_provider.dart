@@ -22,6 +22,7 @@ class UserAppSettingsProvider with ChangeNotifier {
 
   UserAppSettings? userSettings;
   Image? userProfilePicture;
+  Image? tempImage;
   int userSettingsId = 0;
 
   void currentUserSettings(String changefontFamily) {
@@ -77,7 +78,7 @@ class UserAppSettingsProvider with ChangeNotifier {
     }
   }
 
-  Future<String?> grabImage(String username) async {
+  Future<void> grabImage(String username, [bool friendList = false]) async {
     // grab image from fire storage and place it in profile picture.
 
     // Create a storage reference from the app
@@ -91,11 +92,14 @@ class UserAppSettingsProvider with ChangeNotifier {
       final Uint8List? data = await userProfileImageRef.getData(oneMegabyte);
       // Data for "images/island.jpg" is returned, use this as needed.
       print(data.runtimeType);
-      userProfilePicture = Image.memory(data!);
-      return "Success";
+      if (friendList == false) {
+        //updates the current user's profile picture with the image from Firebase
+        userProfilePicture = Image.memory(data!);
+      } else {
+        tempImage = Image.memory(data!);
+      }
     } on FirebaseException catch (e) {
       // Handle any errors.
-      return "Error";
     }
   }
   /*

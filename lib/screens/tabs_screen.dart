@@ -37,7 +37,7 @@ class _TabsScreenState extends State<TabsScreen> {
     },
     {
       'icon': const FaIcon(FontAwesomeIcons.peopleGroup),
-      'label': 'Friends',
+      'label': 'Social',
     },
     {
       'icon': const FaIcon(FontAwesomeIcons.solidUser),
