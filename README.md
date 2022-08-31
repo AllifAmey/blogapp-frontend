@@ -1,21 +1,31 @@
 # blog
 
-A simple blog app.
+A simple blog app with social features.
 
 Planned features:
-Animation transitioning between screens.
-Selecting location for blog.
-Chat feature. 
+* Animation transitioning between screens.
+* Selecting location for blog using Google Map API
+* Chat feature using Django 
 
-Current features:
-Friend list feature - frontend only
-Create User
-Log in as User
-Create Blogs
-Change default font style for blogs. 
-See blogs from all users.
-Select profile image from camera and image stored in backend
-Selecting image from internet or gallery for blogs and stored in the backend
+Current features with frontend and backend complete:
+* User on User Interaction
+    * Be friends with each other [x]
+    * Unfriend each other [x]
+    * Block Users [x]
+    * Unblock Users [x]
+* User content creation system.
+    * Create blog with pictures or without. [x]
+    * Pictures can be with Camera, from phone gallery or Internet link. [x]
+* User personalisation system.
+    * Change profile picture. [x]
+    * Can change default font-style of their blog. [x]
+
+Link to see more screens : https://imgur.com/a/SgukIYu
+
+Here's an example of the friend screen:
+
+<img src="https://i.imgur.com/gaZtoL8.png" width="200">
+
 
 
 ## Getting Started
