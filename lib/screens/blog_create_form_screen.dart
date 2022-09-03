@@ -9,6 +9,7 @@ import '../providers/user_blog_provider.dart';
 import '../widgets/blog_create_image.dart';
 import './blog_individual_screen.dart';
 import './tabs_screen.dart';
+import './select_location_blog.dart';
 
 class BlogCreateForm extends StatefulWidget {
   const BlogCreateForm({Key? key}) : super(key: key);
@@ -76,11 +77,10 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                           onPressed: () {
                             userBlogUnconfirmed
                                 .createBlog(
-                              _editedUserBlog,
-                              imageType,
-                              imageUrl,
-                              userBlogSettings.userSettings?.fontFamily
-                            )
+                                    _editedUserBlog,
+                                    imageType,
+                                    imageUrl,
+                                    userBlogSettings.userSettings?.fontFamily)
                                 .then((_) {
                               if (imageType != "internet") {
                                 userBlogUnconfirmed.postBlogImage(pickedImage!,
@@ -173,12 +173,14 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
     }
 
     List<Widget>? _buildBlogPictureForm(
-        File? pickedImageInput, NetworkImage? pickedInternetImageInput, ) {
+      File? pickedImageInput,
+      NetworkImage? pickedInternetImageInput,
+    ) {
       // create blog picture form to make code neater.
       // from the list of widgets then use the seperator operator to display it.
       // pickedImage!=null) | (pickedInternetImage != null)
       // pickedImage
-      if ((pickedImageInput == null) & (pickedInternetImageInput==null)) {
+      if ((pickedImageInput == null) & (pickedInternetImageInput == null)) {
         // If no image is picked represent them the options
         List<Widget> noImagePicked = [
           TextButton(
@@ -199,7 +201,8 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
           ),
         ];
         return noImagePicked;
-      };
+      }
+      ;
       if ((pickedImageInput != null)) {
         // if image picked is not from internet present image
         // and options to change
@@ -223,7 +226,6 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
                         });
                       },
                       child: const Text("No?")),
-
                 ],
               )
             ],
@@ -258,7 +260,7 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
               )
             ],
           ),
-        ] ;
+        ];
         return imagePickedInternet;
       }
       return null;
@@ -358,15 +360,34 @@ class _BlogCreateFormState extends State<BlogCreateForm> {
               ),
             ),
           ),
-          const Step(title: Text("Location"), content: Text("Location")),
+          Step(
+              title: Text("Location"),
+              content: Row(
+                children: [
+                  // SelectLocationBlogScreen()
+                  TextButton(
+                    child: Text("Location"),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const SelectLocationBlogScreen())),
+                  ),
+                  TextButton(
+                    child: Text("No location"),
+                    onPressed: () {},
+                  )
+                ],
+              )),
           Step(
               title: const Text("Picture"),
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ...?_buildBlogPictureForm(
-                      pickedImage,
-                      pickedInternetImage,)
+                    pickedImage,
+                    pickedInternetImage,
+                  )
                 ],
               )),
           Step(

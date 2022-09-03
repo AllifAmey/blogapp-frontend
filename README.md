@@ -2,10 +2,13 @@
 
 A simple blog app with social features.
 
-Planned features:
-* Animation transitioning between screens.
-* Selecting location for blog using Google Map API
-* Chat feature using Django 
+Current phase of development:
+
+Stalled to work on learning JavaScript fullstack and create a ecommerce site as well as mobile shopapp.
+
+Updates will be incredibly so for the next phase.
+
+Note: Idea for this app in the future - NextDoor copycat with more social features to bring community together. 
 
 Current features with frontend and backend complete:
 * User on User Interaction
@@ -14,6 +17,7 @@ Current features with frontend and backend complete:
     * Block Users [x]
     * Unblock Users [x]
 * User content creation system.
+    * Selecting location for blog using Google Map API - frontend. 
     * Create blog with pictures or without. [x]
     * Pictures can be with Camera, from phone gallery or Internet link. [x]
 * User personalisation system.
